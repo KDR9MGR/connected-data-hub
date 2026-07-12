@@ -200,6 +200,69 @@ export type Database = {
         }
         Relationships: []
       }
+      site_settings: {
+        Row: {
+          about_body: string | null
+          contact_address: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          hero_heading: string
+          hero_image_url: string | null
+          hero_subheading: string
+          id: string
+          og_image_url: string | null
+          seo_keywords: string | null
+          site_description: string
+          site_title: string
+          social_facebook: string | null
+          social_instagram: string | null
+          social_youtube: string | null
+          updated_at: string
+          whatsapp_number: string | null
+        }
+        Insert: {
+          about_body?: string | null
+          contact_address?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          hero_heading?: string
+          hero_image_url?: string | null
+          hero_subheading?: string
+          id?: string
+          og_image_url?: string | null
+          seo_keywords?: string | null
+          site_description?: string
+          site_title?: string
+          social_facebook?: string | null
+          social_instagram?: string | null
+          social_youtube?: string | null
+          updated_at?: string
+          whatsapp_number?: string | null
+        }
+        Update: {
+          about_body?: string | null
+          contact_address?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          hero_heading?: string
+          hero_image_url?: string | null
+          hero_subheading?: string
+          id?: string
+          og_image_url?: string | null
+          seo_keywords?: string | null
+          site_description?: string
+          site_title?: string
+          social_facebook?: string | null
+          social_instagram?: string | null
+          social_youtube?: string | null
+          updated_at?: string
+          whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
       testimonials: {
         Row: {
           author_location: string | null
