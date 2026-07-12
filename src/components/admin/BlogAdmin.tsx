@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { RichTextEditor } from "./RichTextEditor";
+import { MediaField } from "./MediaPicker";
 
 type Post = {
   id: string;
@@ -125,7 +127,11 @@ function PostEditor({ post, onCancel, onSave }: { post: Post; onCancel: () => vo
         <F label="Cover image URL"><input value={p.cover_image_url ?? ""} onChange={(e) => up("cover_image_url", e.target.value)} className={inp} /></F>
       </div>
       <F label="Excerpt"><textarea rows={2} value={p.excerpt ?? ""} onChange={(e) => up("excerpt", e.target.value)} className={`${inp} resize-none`} /></F>
-      <F label="Content (Markdown)"><textarea rows={14} value={p.content} onChange={(e) => up("content", e.target.value)} className={`${inp} resize-none font-mono`} /></F>
+      <div className="space-y-2">
+        <label className="text-[10px] uppercase tracking-[0.22em] font-semibold text-sage">Content</label>
+        <RichTextEditor value={p.content} onChange={(html) => up("content", html)} />
+      </div>
+      <MediaField label="Cover image" value={p.cover_image_url ?? ""} onChange={(v) => up("cover_image_url", v)} />
       <F label="Status">
         <div className="flex gap-2">
           {(["draft", "published"] as const).map((s) => (
