@@ -7,13 +7,16 @@ import { TestimonialAdmin } from "@/components/admin/TestimonialAdmin";
 import { PortfolioAdmin } from "@/components/admin/PortfolioAdmin";
 import { PricingAdmin } from "@/components/admin/PricingAdmin";
 import { SubmissionsAdmin } from "@/components/admin/SubmissionsAdmin";
+import { MediaAdmin } from "@/components/admin/MediaAdmin";
+import { SettingsAdmin } from "@/components/admin/SettingsAdmin";
+import { UsersAdmin } from "@/components/admin/UsersAdmin";
 
 export const Route = createFileRoute("/admin")({ component: AdminPage });
 
-type Tab = "blog" | "testimonials" | "portfolio" | "pricing" | "submissions";
+type Tab = "blog" | "testimonials" | "portfolio" | "pricing" | "submissions" | "media" | "settings" | "users";
 
 function AdminPage() {
-  const { user, roles, loading, isEditor, isBlogger } = useAuth();
+  const { user, roles, loading, isEditor, isBlogger, isAdmin } = useAuth();
   const nav = useNavigate();
   const [tab, setTab] = useState<Tab>("blog");
 
@@ -41,6 +44,9 @@ function AdminPage() {
     { id: "portfolio", label: "Portfolio", show: isEditor },
     { id: "pricing", label: "Pricing", show: isEditor },
     { id: "submissions", label: "Submissions", show: isEditor },
+    { id: "media", label: "Media", show: isEditor },
+    { id: "settings", label: "Settings", show: isEditor },
+    { id: "users", label: "Users", show: isAdmin },
   ];
   const visible = tabs.filter((t) => t.show);
 
@@ -75,6 +81,9 @@ function AdminPage() {
         {tab === "portfolio" && isEditor && <PortfolioAdmin />}
         {tab === "pricing" && isEditor && <PricingAdmin />}
         {tab === "submissions" && isEditor && <SubmissionsAdmin />}
+        {tab === "media" && isEditor && <MediaAdmin />}
+        {tab === "settings" && isEditor && <SettingsAdmin />}
+        {tab === "users" && isAdmin && <UsersAdmin currentUserId={user.id} />}
       </div>
     </section>
   );
