@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-export type AppRole = "editor" | "blogger";
+export type AppRole = "admin" | "editor" | "blogger";
 
 export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
@@ -28,5 +28,15 @@ export function useAuth() {
     setRoles((data ?? []).map((r) => r.role as AppRole));
   }
 
-  return { session, user: session?.user ?? null, roles, loading, isEditor: roles.includes("editor"), isBlogger: roles.includes("blogger") };
+  const isAdmin = roles.includes("admin");
+  // admin inherits editor/blogger for UI gating
+  return {
+    session,
+    user: session?.user ?? null,
+    roles,
+    loading,
+    isAdmin,
+    isEditor: isAdmin || roles.includes("editor"),
+    isBlogger: isAdmin || roles.includes("blogger"),
+  };
 }
