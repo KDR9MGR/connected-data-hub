@@ -21,8 +21,8 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Araya Veda — Clinical Ayurveda for the Modern Soul" },
       { name: "description", content: "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice." },
-      { property: "og:title", content: "Araya Veda — Clinical Ayurveda" },
-      { property: "og:description", content: "Holistic disease prevention, treatment and diet & lifestyle care, delivered with discretion." },
+      { property: "og:title", content: "Araya Veda — Clinical Ayurveda for the Modern Soul" },
+      { property: "og:description", content: "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice." },
       { property: "og:image", content: "/og-cover.jpg" },
     ],
   }),

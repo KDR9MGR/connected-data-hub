@@ -84,8 +84,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "Araya Veda — Clinical Ayurveda for the Modern Soul" },
       { name: "twitter:description", content: "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/MjaykppLJMTyiBPNWVlb7fYGg063/social-images/social-1783233282736-WhatsApp_Image_2026-06-12_at_11.31.03_PM_(2).webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/MjaykppLJMTyiBPNWVlb7fYGg063/social-images/social-1783233282736-WhatsApp_Image_2026-06-12_at_11.31.03_PM_(2).webp" },
+      { property: "og:image", content: "/og-cover.jpg" },
+      { name: "twitter:image", content: "/og-cover.jpg" },
     ],
     links: [
       {
