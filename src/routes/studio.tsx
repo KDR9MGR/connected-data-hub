@@ -11,7 +11,7 @@ import { MediaAdmin } from "@/components/admin/MediaAdmin";
 import { SettingsAdmin } from "@/components/admin/SettingsAdmin";
 import { UsersAdmin } from "@/components/admin/UsersAdmin";
 
-export const Route = createFileRoute("/admin")({ component: AdminPage });
+export const Route = createFileRoute("/studio")({ component: AdminPage });
 
 type Tab = "blog" | "testimonials" | "portfolio" | "pricing" | "submissions" | "media" | "settings" | "users";
 
@@ -21,7 +21,7 @@ function AdminPage() {
   const [tab, setTab] = useState<Tab>("blog");
 
   useEffect(() => {
-    if (!loading && !user) nav({ to: "/login" });
+    if (!loading && !user) nav({ to: "/auth" });
   }, [loading, user, nav]);
 
   if (loading || !user) {
@@ -33,7 +33,7 @@ function AdminPage() {
       <div className="pt-32 pb-24 px-6 max-w-md mx-auto text-center">
         <h1 className="text-2xl font-serif mb-3">No access yet</h1>
         <p className="text-ink/60 text-sm mb-6">Your account has no role assigned. Ask an editor to grant you access.</p>
-        <button onClick={() => supabase.auth.signOut().then(() => nav({ to: "/login" }))} className="text-[11px] uppercase tracking-[0.22em] text-sage border-b border-sage/40 pb-0.5">Sign out</button>
+        <button onClick={() => supabase.auth.signOut().then(() => nav({ to: "/auth" }))} className="text-[11px] uppercase tracking-[0.22em] text-sage border-b border-sage/40 pb-0.5">Sign out</button>
       </div>
     );
   }
@@ -61,7 +61,7 @@ function AdminPage() {
               Signed in as {user.email} · {roles.join(", ") || "no role"}
             </p>
           </div>
-          <button onClick={() => supabase.auth.signOut().then(() => nav({ to: "/login" }))}
+          <button onClick={() => supabase.auth.signOut().then(() => nav({ to: "/auth" }))}
             className="text-[11px] uppercase tracking-[0.22em] text-ink/60 border-b border-ink/20 hover:text-sage hover:border-sage pb-0.5">
             Sign out
           </button>

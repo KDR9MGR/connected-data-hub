@@ -1,14 +1,24 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { checkStudioUnlocked, unlockStudio } from "@/lib/gate.functions";
 
-export const Route = createFileRoute("/login")({ component: LoginPage });
+export const Route = createFileRoute("/auth")({ component: AuthPage });
 
 type Mode = "signin" | "signup";
 type Role = "editor" | "blogger";
 
-function LoginPage() {
+function AuthPage() {
   const nav = useNavigate();
+  const check = useServerFn(checkStudioUnlocked);
+  const unlock = useServerFn(unlockStudio);
+  const [gateChecked, setGateChecked] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
+  const [code, setCode] = useState("");
+  const [gateErr, setGateErr] = useState<string | null>(null);
+  const [gateLoading, setGateLoading] = useState(false);
+
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,10 +28,29 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    check().then((r) => {
+      setUnlocked(r.unlocked);
+      setGateChecked(true);
+    });
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) nav({ to: "/admin" });
+      if (data.session) nav({ to: "/studio" });
     });
   }, [nav]);
+
+  async function submitCode(e: React.FormEvent) {
+    e.preventDefault();
+    setGateErr(null);
+    setGateLoading(true);
+    try {
+      const r = await unlock({ data: { code } });
+      if (r.ok) setUnlocked(true);
+      else setGateErr("Invalid access code");
+    } catch (e: any) {
+      setGateErr(e?.message ?? "Something went wrong");
+    } finally {
+      setGateLoading(false);
+    }
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -32,7 +61,7 @@ function LoginPage() {
         const { error } = await supabase.auth.signUp({
           email, password,
           options: {
-            emailRedirectTo: `${window.location.origin}/admin`,
+            emailRedirectTo: `${window.location.origin}/studio`,
             data: { display_name: displayName || email.split("@")[0], role },
           },
         });
@@ -41,7 +70,7 @@ function LoginPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       }
-      nav({ to: "/admin" });
+      nav({ to: "/studio" });
     } catch (e: any) {
       setErr(e?.message ?? "Something went wrong");
     } finally {
@@ -53,15 +82,43 @@ function LoginPage() {
     setErr(null);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/admin` },
+      options: { redirectTo: `${window.location.origin}/studio` },
     });
     if (error) setErr(error.message);
+  }
+
+  if (!gateChecked) {
+    return <section className="pt-32 pb-24 px-6 text-center text-ink/50 text-sm">Loading…</section>;
+  }
+
+  if (!unlocked) {
+    return (
+      <section className="pt-32 pb-24 px-6 min-h-screen">
+        <div className="max-w-md mx-auto">
+          <div className="text-[10px] uppercase tracking-[0.3em] text-gold mb-4">Restricted</div>
+          <h1 className="text-4xl font-serif mb-3">Enter access code</h1>
+          <p className="text-ink/60 text-sm mb-10">This area is for staff. Enter the shared access code to continue.</p>
+          <form onSubmit={submitCode} className="bg-stone p-8 rounded-3xl space-y-5">
+            <Field label="Access code">
+              <input type="password" required autoFocus value={code} onChange={(e) => setCode(e.target.value)} className={inputCls} placeholder="••••••••" autoComplete="off" />
+            </Field>
+            {gateErr && <p className="text-[12px] text-destructive">{gateErr}</p>}
+            <button type="submit" disabled={gateLoading} className="w-full bg-sage text-cream py-4 rounded-full text-xs font-medium uppercase tracking-[0.22em] hover:bg-ink transition-colors disabled:opacity-60">
+              {gateLoading ? "Please wait…" : "Continue"}
+            </button>
+          </form>
+          <div className="mt-6 text-center">
+            <Link to="/" className="text-[11px] uppercase tracking-[0.22em] text-ink/40 hover:text-sage">← Back to site</Link>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (
     <section className="pt-32 pb-24 px-6 min-h-screen">
       <div className="max-w-md mx-auto">
-        <div className="text-[10px] uppercase tracking-[0.3em] text-gold mb-4">Swāstha CMS</div>
+        <div className="text-[10px] uppercase tracking-[0.3em] text-gold mb-4">Swāstha Studio</div>
         <h1 className="text-4xl font-serif mb-3">{mode === "signin" ? "Welcome back" : "Create your account"}</h1>
         <p className="text-ink/60 text-sm mb-10">
           {mode === "signin" ? "Sign in to manage content." : "Editors and bloggers only."}
