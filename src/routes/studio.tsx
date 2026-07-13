@@ -11,7 +11,7 @@ import { MediaAdmin } from "@/components/admin/MediaAdmin";
 import { SettingsAdmin } from "@/components/admin/SettingsAdmin";
 import { UsersAdmin } from "@/components/admin/UsersAdmin";
 
-export const Route = createFileRoute("/admin")({ component: AdminPage });
+export const Route = createFileRoute("/studio")({ component: AdminPage });
 
 type Tab = "blog" | "testimonials" | "portfolio" | "pricing" | "submissions" | "media" | "settings" | "users";
 
