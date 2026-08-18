@@ -4,17 +4,34 @@ import portfolioHerbs from "@/assets/portfolio-herbs.jpg";
 import portfolioMeditation from "@/assets/portfolio-meditation.jpg";
 import testimonialVideo from "@/assets/testimonial-video.jpg";
 import testimonialSkin from "@/assets/testimonial-skin.jpg";
-import c1 from "@/assets/clinic/c1.jpeg.asset.json";
-import c2 from "@/assets/clinic/c2.jpeg.asset.json";
-import c3 from "@/assets/clinic/c3.jpeg.asset.json";
-import c4 from "@/assets/clinic/c4.jpeg.asset.json";
-import c5 from "@/assets/clinic/c5.jpeg.asset.json";
-import c6 from "@/assets/clinic/c6.jpeg.asset.json";
-import c7 from "@/assets/clinic/c7.jpeg.asset.json";
 import { ContactForm } from "@/components/ContactForm";
 import { ConsultWhatsapp, WA_URL } from "@/components/ConsultWhatsapp";
 import { useState, useEffect } from "react";
 import { Play } from "lucide-react";
+
+const CLINIC_IMAGES: { url: string }[] = [
+  {
+    url: "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=serene%20ayurveda%20clinic%20reception%20area%20with%20natural%20light%2C%20wooden%20furniture%2C%20indoor%20plants%2C%20warm%20earth%20tones%2C%20spa-like%20atmosphere%2C%20stone%20floor%2C%20minimalist&image_size=portrait_4_3",
+  },
+  {
+    url: "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=panchakarma%20treatment%20room%20with%20wooden%20massage%20table%2C%20warm%20towels%2C%20herbal%20oils%2C%20candles%2C%20soft%20lighting%2C%20ayurvedic%20wellness%2C%20serene&image_size=portrait_4_3",
+  },
+  {
+    url: "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=ayurvedic%20herbal%20pharmacy%20with%20wooden%20shelves%20filled%20with%20glass%20jars%20of%20dried%20herbs%2C%20roots%2C%20powders%2C%20brass%20bowls%2C%20warm%20natural%20lighting&image_size=portrait_4_3",
+  },
+  {
+    url: "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=shirodhara%20ayurvedic%20therapy%20setup%2C%20warm%20oil%20dripping%20device%20over%20wooden%20table%2C%20peaceful%20room%2C%20stone%20walls%2C%20soft%20zen%20lighting&image_size=portrait_4_3",
+  },
+  {
+    url: "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=tranquil%20yoga%20meditation%20space%20in%20ayurveda%20clinic%2C%20bamboo%20mats%2C%20floor%20cushions%2C%20lotus%20flowers%2C%20natural%20sunlight%2C%20calm%20peaceful%20atmosphere&image_size=portrait_4_3",
+  },
+  {
+    url: "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=ayurvedic%20doctor%20consultation%20room%2C%20wooden%20desk%2C%20pulse%20diagnosis%20setting%2C%20herbal%20medicine%20books%2C%20plants%2C%20warm%20professional%20ambiance&image_size=portrait_4_3",
+  },
+  {
+    url: "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=outdoor%20zen%20garden%20at%20ayurveda%20wellness%20retreat%2C%20sand%20patterns%2C%20bonsai%2C%20stone%20pathways%2C%20water%20feature%2C%20lush%20greenery%2C%20peaceful&image_size=portrait_4_3",
+  },
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,7 +40,7 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice." },
       { property: "og:title", content: "Araya Veda — Clinical Ayurveda" },
       { property: "og:description", content: "Holistic disease prevention, treatment and diet & lifestyle care, delivered with discretion." },
-      { property: "og:image", content: "/og-cover.jpg" },
+      { property: "og:image", content: "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=ayurveda%20wellness%20clinic%20hero%20banner%2C%20warm%20earth%20tones%2C%20herbs%2C%20zen%20stones%2C%20lotus%20flower%2C%20gold%20accents%2C%20professional%20healthcare&image_size=landscape_16_9" },
     ],
   }),
   component: Home,
@@ -57,7 +74,15 @@ function Home() {
 }
 
 function Hero() {
-  const slides = [c2, c3, c5, c6, c7, c1, c4];
+  const slides = [
+    CLINIC_IMAGES[1],
+    CLINIC_IMAGES[2],
+    CLINIC_IMAGES[4],
+    CLINIC_IMAGES[5],
+    CLINIC_IMAGES[6],
+    CLINIC_IMAGES[0],
+    CLINIC_IMAGES[3],
+  ];
   const [idx, setIdx] = useState(0);
   useEffect(() => {
     const t = setInterval(() => setIdx((i) => (i + 1) % slides.length), 3500);
