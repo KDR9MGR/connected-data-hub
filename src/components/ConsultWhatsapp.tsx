@@ -1,10 +1,17 @@
-const WA_URL = "https://wa.me/442079460123?text=Hello%20Araya%20Veda%2C%20I%27d%20like%20to%20book%20a%20consultation.";
+import { usePageSection } from "@/lib/usePageContent";
+
+function buildWaUrl(number: string, message: string) {
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+}
 
 export function ConsultWhatsapp({ variant = "default" }: { variant?: "default" | "tile" }) {
+  const { content } = usePageSection("global", "contact");
+  const waUrl = buildWaUrl(content.whatsapp_number, content.whatsapp_message);
+
   if (variant === "tile") {
     return (
       <a
-        href={WA_URL}
+        href={waUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="block bg-sage text-cream rounded-2xl p-8 hover:bg-ink transition-colors"
@@ -22,7 +29,7 @@ export function ConsultWhatsapp({ variant = "default" }: { variant?: "default" |
   }
   return (
     <a
-      href={WA_URL}
+      href={waUrl}
       target="_blank"
       rel="noopener noreferrer"
       className="inline-flex items-center gap-2 bg-sage text-cream px-6 py-3 rounded-full text-xs font-medium uppercase tracking-[0.18em] hover:bg-ink transition-colors"
@@ -32,4 +39,7 @@ export function ConsultWhatsapp({ variant = "default" }: { variant?: "default" |
   );
 }
 
-export { WA_URL };
+export function useWaUrl() {
+  const { content } = usePageSection("global", "contact");
+  return buildWaUrl(content.whatsapp_number, content.whatsapp_message);
+}

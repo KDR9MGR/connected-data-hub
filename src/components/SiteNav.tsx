@@ -36,12 +36,6 @@ export function SiteNav() {
 
         <div className="flex items-center gap-3">
           <Link
-            to="/login"
-            className="hidden md:inline-flex text-[11px] font-medium uppercase tracking-[0.18em] text-ink/60 hover:text-sage transition-colors"
-          >
-            Studio
-          </Link>
-          <Link
             to="/contact"
             className="hidden sm:inline-flex bg-sage text-cream px-5 py-2.5 rounded-full text-[11px] font-medium uppercase tracking-[0.18em] hover:bg-ink transition-colors"
           >

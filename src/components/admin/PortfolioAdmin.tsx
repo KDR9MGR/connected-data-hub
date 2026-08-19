@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { F, inp } from "./formPrimitives";
+import { MediaPicker } from "./MediaPicker";
 
 type P = { id: string; category: string; title: string; description: string | null; image_url: string | null; is_published: boolean; sort_order: number };
 
-export function PortfolioAdmin() {
+export function PortfolioAdmin({ userId }: { userId: string }) {
   const [items, setItems] = useState<P[]>([]);
   const [edit, setEdit] = useState<Partial<P> | null>(null);
 
@@ -54,7 +55,7 @@ export function PortfolioAdmin() {
             <F label="Title"><input className={inp} value={edit.title ?? ""} onChange={(e) => setEdit({ ...edit, title: e.target.value })} /></F>
           </div>
           <F label="Description"><textarea rows={3} className={`${inp} resize-none`} value={edit.description ?? ""} onChange={(e) => setEdit({ ...edit, description: e.target.value })} /></F>
-          <F label="Image URL"><input className={inp} value={edit.image_url ?? ""} onChange={(e) => setEdit({ ...edit, image_url: e.target.value })} /></F>
+          <MediaPicker userId={userId} label="Image" value={edit.image_url ?? ""} onChange={(url) => setEdit({ ...edit, image_url: url })} />
           <div className="grid md:grid-cols-2 gap-5">
             <F label="Sort order"><input type="number" className={inp} value={edit.sort_order ?? 0} onChange={(e) => setEdit({ ...edit, sort_order: Number(e.target.value) })} /></F>
             <label className="flex items-center gap-2 text-xs text-ink/70 mt-6">

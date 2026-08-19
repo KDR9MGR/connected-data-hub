@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { F, inp } from "./formPrimitives";
+import { MediaPicker } from "./MediaPicker";
 
 type T = { id: string; author_name: string; author_location: string | null; quote: string; rating: number | null; media_type: string; media_url: string | null; is_published: boolean; sort_order: number };
 
-export function TestimonialAdmin() {
+export function TestimonialAdmin({ userId }: { userId: string }) {
   const [items, setItems] = useState<T[]>([]);
   const [edit, setEdit] = useState<Partial<T> | null>(null);
 
@@ -62,7 +63,7 @@ export function TestimonialAdmin() {
             </F>
             <F label="Sort order"><input type="number" className={inp} value={edit.sort_order ?? 0} onChange={(e) => setEdit({ ...edit, sort_order: Number(e.target.value) })} /></F>
           </div>
-          <F label="Media URL"><input className={inp} value={edit.media_url ?? ""} onChange={(e) => setEdit({ ...edit, media_url: e.target.value })} placeholder="https://..." /></F>
+          <MediaPicker userId={userId} label="Media" value={edit.media_url ?? ""} onChange={(url) => setEdit({ ...edit, media_url: url })} />
           <label className="flex items-center gap-2 text-xs text-ink/70">
             <input type="checkbox" checked={edit.is_published ?? true} onChange={(e) => setEdit({ ...edit, is_published: e.target.checked })} /> Published
           </label>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { MediaPicker } from "./MediaPicker";
 
 type Post = {
   id: string;
@@ -68,7 +69,7 @@ export function BlogAdmin({ userId, isEditor }: { userId: string; isEditor: bool
     load();
   }
 
-  if (editing) return <PostEditor post={editing} onCancel={() => setEditing(null)} onSave={save} />;
+  if (editing) return <PostEditor post={editing} userId={userId} onCancel={() => setEditing(null)} onSave={save} />;
 
   return (
     <div className="space-y-6">
@@ -105,7 +106,7 @@ export function BlogAdmin({ userId, isEditor }: { userId: string; isEditor: bool
   );
 }
 
-function PostEditor({ post, onCancel, onSave }: { post: Post; onCancel: () => void; onSave: (p: Post) => void }) {
+function PostEditor({ post, userId, onCancel, onSave }: { post: Post; userId: string; onCancel: () => void; onSave: (p: Post) => void }) {
   const [p, setP] = useState<Post>(post);
   const up = <K extends keyof Post>(k: K, v: Post[K]) => setP((x) => ({ ...x, [k]: v }));
 
@@ -122,7 +123,7 @@ function PostEditor({ post, onCancel, onSave }: { post: Post; onCancel: () => vo
       </div>
       <div className="grid md:grid-cols-2 gap-5">
         <F label="Read time"><input value={p.read_time ?? ""} onChange={(e) => up("read_time", e.target.value)} placeholder="5 min read" className={inp} /></F>
-        <F label="Cover image URL"><input value={p.cover_image_url ?? ""} onChange={(e) => up("cover_image_url", e.target.value)} className={inp} /></F>
+        <MediaPicker userId={userId} label="Cover image" value={p.cover_image_url ?? ""} onChange={(url) => up("cover_image_url", url)} />
       </div>
       <F label="Excerpt"><textarea rows={2} value={p.excerpt ?? ""} onChange={(e) => up("excerpt", e.target.value)} className={`${inp} resize-none`} /></F>
       <F label="Content (Markdown)"><textarea rows={14} value={p.content} onChange={(e) => up("content", e.target.value)} className={`${inp} resize-none font-mono`} /></F>
