@@ -17,19 +17,6 @@ const heroFields: Field[] = [
   { type: "text", key: "cta_label", label: "Button label" },
 ];
 
-const itemsFields: Field[] = [
-  {
-    type: "list",
-    key: "items",
-    label: "Items",
-    itemLabel: "Item",
-    itemFields: [
-      { type: "text", key: "title", label: "Title" },
-      { type: "textarea", key: "description", label: "Description" },
-    ],
-  },
-];
-
 export const PAGE_CONTENT_SCHEMA: Record<string, PageSchema> = {
   home: {
     hero: {
@@ -116,9 +103,9 @@ export const PAGE_CONTENT_SCHEMA: Record<string, PageSchema> = {
       ],
     },
   },
-  treatment: { hero: { label: "Hero", fields: heroFields }, items: { label: "Treatments list", fields: itemsFields } },
-  "diet-lifestyle": { hero: { label: "Hero", fields: heroFields }, items: { label: "Cards list", fields: itemsFields } },
-  "disease-prevention": { hero: { label: "Hero", fields: heroFields }, items: { label: "Pillars list", fields: itemsFields } },
+  treatment: { hero: { label: "Hero", fields: heroFields } },
+  "diet-lifestyle": { hero: { label: "Hero", fields: heroFields } },
+  "disease-prevention": { hero: { label: "Hero", fields: heroFields } },
   blog: {
     hero: {
       label: "Hero",
@@ -139,6 +126,10 @@ export const PAGE_CONTENT_SCHEMA: Record<string, PageSchema> = {
         { type: "text", key: "phone_display", label: "Phone (displayed)" },
       ],
     },
+    concerns: {
+      label: "Concern categories",
+      fields: [{ type: "string-list", key: "items", label: "Categories (used by the contact form)" }],
+    },
     footer: {
       label: "Footer",
       fields: [
@@ -158,8 +149,6 @@ export const PAGE_LABELS: Record<string, string> = {
   blog: "Blog",
   global: "Site Settings",
 };
-
-type Item = { title: string; description: string };
 
 export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, any>> = {
   home: {
@@ -223,7 +212,6 @@ export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, any>> = {
       image: "/seed/portfolio-panchakarma.jpg",
       cta_label: "Request Treatment Plan",
     },
-    items: { items: [] as Item[] },
   },
   "diet-lifestyle": {
     hero: {
@@ -234,7 +222,6 @@ export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, any>> = {
       image: "/seed/portfolio-meditation.jpg",
       cta_label: "Design My Lifestyle Plan",
     },
-    items: { items: [] as Item[] },
   },
   "disease-prevention": {
     hero: {
@@ -245,12 +232,27 @@ export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, any>> = {
       image: "/seed/portfolio-herbs.jpg",
       cta_label: "Begin Prevention Plan",
     },
-    items: { items: [] as Item[] },
   },
   blog: {
     hero: { kicker: "Journal", heading_line1: "Notes from the", heading_highlight: "clinic." },
   },
   global: {
+    theme: {
+      accent_color: "#4a6355",
+      background_color: "#fafaf6",
+      heading_font: "Cormorant Garamond",
+    },
+    concerns: {
+      items: [
+        "Digestive Health (IBS, Acidity)",
+        "Chronic Pain & Arthritis",
+        "Skin Disorders (Psoriasis, Eczema)",
+        "Mental Wellness & Sleep",
+        "Metabolic & Diabetes",
+        "Autoimmune Support",
+        "Preventative & Lifestyle",
+      ],
+    },
     contact: {
       email: "concierge@arayaveda.com",
       whatsapp_number: "442079460123",

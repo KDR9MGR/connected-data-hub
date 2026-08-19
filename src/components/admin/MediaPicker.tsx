@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MediaGrid, UploadButton, useMediaAssets, type MediaAsset } from "./MediaLibrary";
+import { parseYoutubeId, isVideoFile } from "@/lib/youtube";
 
 export function MediaPicker({
   userId,
@@ -14,13 +15,16 @@ export function MediaPicker({
 }) {
   const [open, setOpen] = useState(false);
   const { items, reload } = useMediaAssets();
+  const ytId = parseYoutubeId(value);
 
   return (
     <div className="space-y-2">
       <label className="text-[10px] uppercase tracking-[0.22em] font-semibold text-sage">{label}</label>
       <div className="flex items-center gap-4">
         <div className="size-16 rounded-lg overflow-hidden bg-stone border border-sage/15 shrink-0">
-          {value && (value.match(/\.(mp4|webm|mov)$/i) ? (
+          {value && (ytId ? (
+            <img src={`https://img.youtube.com/vi/${ytId}/default.jpg`} alt="" className="w-full h-full object-cover" />
+          ) : isVideoFile(value) ? (
             <video src={value} className="w-full h-full object-cover" muted />
           ) : (
             <img src={value} alt="" className="w-full h-full object-cover" />
@@ -30,7 +34,7 @@ export function MediaPicker({
           <input
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="https://… or pick from library"
+            placeholder="https://… · YouTube link · or pick from library"
             className="w-full bg-transparent border-b border-sage/20 py-2 text-sm focus:outline-none focus:border-sage"
           />
           <button

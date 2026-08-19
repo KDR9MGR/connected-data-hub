@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { usePageSection } from "@/lib/usePageContent";
+import { MediaDisplay } from "@/components/MediaDisplay";
 
 export const Route = createFileRoute("/diet-lifestyle")({
   head: () => ({
@@ -15,8 +18,18 @@ export const Route = createFileRoute("/diet-lifestyle")({
 
 function Page() {
   const { content: hero } = usePageSection("diet-lifestyle", "hero");
-  const { content: itemsContent } = usePageSection("diet-lifestyle", "items");
-  const items: { title: string; description: string }[] = itemsContent.items ?? [];
+  const { data: items } = useQuery({
+    queryKey: ["treatment_items", "diet-lifestyle"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("treatment_items")
+        .select("*")
+        .eq("is_published", true)
+        .contains("pages", ["diet-lifestyle"])
+        .order("sort_order");
+      return data ?? [];
+    },
+  });
 
   return (
     <article className="pt-32 md:pt-40 pb-24">
@@ -34,8 +47,9 @@ function Page() {
       </section>
 
       <section className="px-6 max-w-7xl mx-auto grid md:grid-cols-3 gap-6">
-        {items.map((c, i) => (
-          <div key={i} className="p-8 bg-stone rounded-2xl">
+        {items?.map((c) => (
+          <div key={c.id} className="p-8 bg-stone rounded-2xl">
+            {c.media_url && <MediaDisplay url={c.media_url} alt={c.title} className="w-full rounded-xl object-cover mb-4 aspect-video" />}
             <h3 className="text-xl font-serif mb-3">{c.title}</h3>
             <p className="text-sm text-ink/65 leading-relaxed">{c.description}</p>
           </div>

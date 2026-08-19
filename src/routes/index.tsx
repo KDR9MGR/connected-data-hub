@@ -6,6 +6,8 @@ import { ConsultWhatsapp, useWaUrl } from "@/components/ConsultWhatsapp";
 import { usePageSection } from "@/lib/usePageContent";
 import { useState, useEffect } from "react";
 import { Play } from "lucide-react";
+import { MediaDisplay } from "@/components/MediaDisplay";
+import { parseYoutubeId, isVideoFile } from "@/lib/youtube";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -315,7 +317,9 @@ function Testimonials() {
           {items?.map((t) => (
             <div key={t.id} className="space-y-4">
               {t.media_url && (
-                t.media_type === "video" ? (
+                parseYoutubeId(t.media_url) || isVideoFile(t.media_url) ? (
+                  <MediaDisplay url={t.media_url} alt={`${t.author_name} testimonial`} className="w-full rounded-2xl overflow-hidden" />
+                ) : t.media_type === "video" ? (
                   <a href={waUrl} target="_blank" rel="noopener noreferrer" className="relative block rounded-2xl overflow-hidden aspect-video group">
                     <img src={t.media_url} alt={`${t.author_name} testimonial`} loading="lazy" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-ink/15 group-hover:bg-ink/25 transition-colors" />

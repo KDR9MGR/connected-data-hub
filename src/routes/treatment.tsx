@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { usePageSection } from "@/lib/usePageContent";
+import { MediaDisplay } from "@/components/MediaDisplay";
 
 export const Route = createFileRoute("/treatment")({
   head: () => ({
@@ -15,8 +18,18 @@ export const Route = createFileRoute("/treatment")({
 
 function Page() {
   const { content: hero } = usePageSection("treatment", "hero");
-  const { content: itemsContent } = usePageSection("treatment", "items");
-  const items: { title: string; description: string }[] = itemsContent.items ?? [];
+  const { data: items } = useQuery({
+    queryKey: ["treatment_items", "treatment"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("treatment_items")
+        .select("*")
+        .eq("is_published", true)
+        .contains("pages", ["treatment"])
+        .order("sort_order");
+      return data ?? [];
+    },
+  });
 
   return (
     <article className="pt-32 md:pt-40 pb-24">
@@ -35,11 +48,14 @@ function Page() {
 
       <section className="px-6 max-w-7xl mx-auto">
         <div className="divide-y divide-sage/10 border-y border-sage/10">
-          {items.map((t, i) => (
-            <div key={i} className="py-8 flex flex-col md:flex-row md:items-center justify-between gap-4 group">
-              <div className="flex items-start gap-8 md:gap-16">
+          {items?.map((t, i) => (
+            <div key={t.id} className="py-8 flex flex-col md:flex-row md:items-start justify-between gap-4 group">
+              <div className="flex items-start gap-8 md:gap-16 md:w-1/2">
                 <span className="text-sm font-mono text-sage/50">{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="text-2xl font-serif group-hover:text-gold transition-colors">{t.title}</h3>
+                <div>
+                  <h3 className="text-2xl font-serif group-hover:text-gold transition-colors mb-2">{t.title}</h3>
+                  {t.media_url && <MediaDisplay url={t.media_url} alt={t.title} className="w-full max-w-sm rounded-xl object-cover mt-3" />}
+                </div>
               </div>
               <p className="md:max-w-md text-sm text-ink/65 leading-relaxed">{t.description}</p>
             </div>

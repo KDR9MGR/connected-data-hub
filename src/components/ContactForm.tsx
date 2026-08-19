@@ -1,16 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-
-const DISEASES = [
-  "Digestive Health (IBS, Acidity)",
-  "Chronic Pain & Arthritis",
-  "Skin Disorders (Psoriasis, Eczema)",
-  "Mental Wellness & Sleep",
-  "Metabolic & Diabetes",
-  "Autoimmune Support",
-  "Preventative & Lifestyle",
-] as const;
+import { usePageSection } from "@/lib/usePageContent";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Please enter your name").max(100),
@@ -26,6 +17,8 @@ type FormState = z.input<typeof schema>;
 const empty: FormState = { name: "", phone: "", email: "", subject: "", disease: "", body: "" };
 
 export function ContactForm() {
+  const { content: concerns } = usePageSection("global", "concerns");
+  const diseases: string[] = concerns.items ?? [];
   const [data, setData] = useState<FormState>(empty);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
@@ -104,7 +97,7 @@ export function ContactForm() {
       <Field label="Concern (Disease)" error={errors.disease}>
         <select value={data.disease} onChange={update("disease")} className={`${inputClass} appearance-none`}>
           <option value="">Select a category…</option>
-          {DISEASES.map((d) => (
+          {diseases.map((d) => (
             <option key={d} value={d}>{d}</option>
           ))}
         </select>

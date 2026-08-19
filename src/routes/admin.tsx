@@ -9,16 +9,21 @@ import { PricingAdmin } from "@/components/admin/PricingAdmin";
 import { SubmissionsAdmin } from "@/components/admin/SubmissionsAdmin";
 import { MediaLibrary } from "@/components/admin/MediaLibrary";
 import { PageContentAdmin } from "@/components/admin/PageContentAdmin";
+import { TreatmentItemsAdmin } from "@/components/admin/TreatmentItemsAdmin";
+import { ThemeAdmin } from "@/components/admin/ThemeAdmin";
+import { Dashboard } from "@/components/admin/Dashboard";
 import { PAGE_LABELS } from "@/lib/pageContentSchema";
 
 export const Route = createFileRoute("/admin")({ component: AdminPage });
 
 type Destination =
+  | { group: "dashboard" }
   | { group: "pages"; page: string }
-  | { group: "collections"; id: "blog" | "testimonials" | "portfolio" | "pricing" }
+  | { group: "collections"; id: "blog" | "testimonials" | "portfolio" | "pricing" | "treatments" }
   | { group: "media" }
+  | { group: "theme" }
   | { group: "settings" }
-  | { group: "submissions" };
+  | { group: "inquiries" };
 
 function destKey(d: Destination) {
   if (d.group === "pages") return `pages:${d.page}`;
@@ -29,7 +34,7 @@ function destKey(d: Destination) {
 function AdminPage() {
   const { user, roles, loading, isEditor, isBlogger } = useAuth();
   const nav = useNavigate();
-  const [active, setActive] = useState<Destination>({ group: "pages", page: "home" });
+  const [active, setActive] = useState<Destination>({ group: "dashboard" });
 
   useEffect(() => {
     if (!loading && !user) nav({ to: "/login" });
@@ -50,8 +55,9 @@ function AdminPage() {
   }
 
   const pageDests: Destination[] = ["home", "treatment", "diet-lifestyle", "disease-prevention", "blog"].map((page) => ({ group: "pages", page }));
-  const collectionDests: { id: "blog" | "testimonials" | "portfolio" | "pricing"; label: string; show: boolean }[] = [
+  const collectionDests: { id: "blog" | "testimonials" | "portfolio" | "pricing" | "treatments"; label: string; show: boolean }[] = [
     { id: "blog", label: "Blog Posts", show: isEditor || isBlogger },
+    { id: "treatments", label: "Treatments / Conditions", show: isEditor },
     { id: "testimonials", label: "Testimonials", show: isEditor },
     { id: "portfolio", label: "Portfolio", show: isEditor },
     { id: "pricing", label: "Pricing Plans", show: isEditor },
@@ -95,6 +101,11 @@ function AdminPage() {
         <div className="grid md:grid-cols-[220px_1fr] gap-8">
           <nav className="md:sticky md:top-24 self-start">
             {(isEditor || isBlogger) && (
+              <NavGroup title="Overview">
+                <NavItem dest={{ group: "dashboard" }} label="Dashboard" />
+              </NavGroup>
+            )}
+            {(isEditor || isBlogger) && (
               <NavGroup title="Pages">
                 {pageDests.map((d) => d.group === "pages" && <NavItem key={d.page} dest={d} label={PAGE_LABELS[d.page]} />)}
               </NavGroup>
@@ -111,21 +122,25 @@ function AdminPage() {
             )}
             {isEditor && (
               <NavGroup title="System">
+                <NavItem dest={{ group: "theme" }} label="Theme" />
                 <NavItem dest={{ group: "settings" }} label="Global Settings" />
-                <NavItem dest={{ group: "submissions" }} label="Submissions" />
+                <NavItem dest={{ group: "inquiries" }} label="Inquiries" />
               </NavGroup>
             )}
           </nav>
 
           <div className="min-w-0">
+            {active.group === "dashboard" && (isEditor || isBlogger) && <Dashboard />}
             {active.group === "pages" && (isEditor || isBlogger) && <PageContentAdmin page={active.page} userId={user.id} />}
             {active.group === "collections" && active.id === "blog" && (isEditor || isBlogger) && <BlogAdmin userId={user.id} isEditor={isEditor} />}
+            {active.group === "collections" && active.id === "treatments" && isEditor && <TreatmentItemsAdmin userId={user.id} />}
             {active.group === "collections" && active.id === "testimonials" && isEditor && <TestimonialAdmin userId={user.id} />}
             {active.group === "collections" && active.id === "portfolio" && isEditor && <PortfolioAdmin userId={user.id} />}
             {active.group === "collections" && active.id === "pricing" && isEditor && <PricingAdmin />}
             {active.group === "media" && (isEditor || isBlogger) && <MediaLibrary userId={user.id} />}
+            {active.group === "theme" && isEditor && <ThemeAdmin />}
             {active.group === "settings" && isEditor && <PageContentAdmin page="global" userId={user.id} />}
-            {active.group === "submissions" && isEditor && <SubmissionsAdmin />}
+            {active.group === "inquiries" && isEditor && <SubmissionsAdmin />}
           </div>
         </div>
       </div>

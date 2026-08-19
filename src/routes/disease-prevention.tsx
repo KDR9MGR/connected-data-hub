@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { usePageSection } from "@/lib/usePageContent";
+import { MediaDisplay } from "@/components/MediaDisplay";
 
 export const Route = createFileRoute("/disease-prevention")({
   head: () => ({
@@ -15,8 +18,18 @@ export const Route = createFileRoute("/disease-prevention")({
 
 function Page() {
   const { content: hero } = usePageSection("disease-prevention", "hero");
-  const { content: itemsContent } = usePageSection("disease-prevention", "items");
-  const items: { title: string; description: string }[] = itemsContent.items ?? [];
+  const { data: items } = useQuery({
+    queryKey: ["treatment_items", "disease-prevention"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("treatment_items")
+        .select("*")
+        .eq("is_published", true)
+        .contains("pages", ["disease-prevention"])
+        .order("sort_order");
+      return data ?? [];
+    },
+  });
 
   return (
     <article className="pt-32 md:pt-40 pb-24">
@@ -35,13 +48,14 @@ function Page() {
 
       <section className="px-6 max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-x-16 gap-y-10 border-t border-sage/10">
-          {items.map((p, i) => (
-            <div key={i} className="pt-8 pb-8 border-b border-sage/10">
+          {items?.map((p, i) => (
+            <div key={p.id} className="pt-8 pb-8 border-b border-sage/10">
               <div className="flex items-baseline gap-6">
                 <span className="text-[10px] font-mono text-sage/50">{String(i + 1).padStart(2, "0")}</span>
                 <div>
                   <h3 className="text-2xl font-serif mb-2">{p.title}</h3>
                   <p className="text-ink/65 leading-relaxed">{p.description}</p>
+                  {p.media_url && <MediaDisplay url={p.media_url} alt={p.title} className="w-full max-w-sm rounded-xl object-cover mt-3" />}
                 </div>
               </div>
             </div>

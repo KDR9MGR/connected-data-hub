@@ -305,6 +305,48 @@ export type Database = {
         }
         Relationships: []
       }
+      treatment_items: {
+        Row: {
+          body: string | null
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_published: boolean
+          media_url: string | null
+          pages: string[]
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          media_url?: string | null
+          pages?: string[]
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          media_url?: string | null
+          pages?: string[]
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -340,7 +382,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "editor" | "blogger"
+      app_role: "editor" | "blogger" | "admin"
       post_status: "draft" | "published"
     }
     CompositeTypes: {
@@ -469,7 +511,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["editor", "blogger"],
+      app_role: ["editor", "blogger", "admin"],
       post_status: ["draft", "published"],
     },
   },
