@@ -16,7 +16,10 @@ export function SiteNav() {
   return (
     <nav className="fixed top-0 inset-x-0 z-50 bg-cream/80 backdrop-blur-md border-b border-sage/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link to="/" className="text-xl md:text-2xl font-serif font-semibold tracking-tight text-sage">
+        <Link
+          to="/"
+          className="text-xl md:text-2xl font-serif font-semibold tracking-tight text-sage"
+        >
           Swāstha
         </Link>
 

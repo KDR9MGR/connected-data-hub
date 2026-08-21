@@ -19,16 +19,23 @@ export function MediaPicker({
 
   return (
     <div className="space-y-2">
-      <label className="text-[10px] uppercase tracking-[0.22em] font-semibold text-sage">{label}</label>
+      <label className="text-[10px] uppercase tracking-[0.22em] font-semibold text-sage">
+        {label}
+      </label>
       <div className="flex items-center gap-4">
         <div className="size-16 rounded-lg overflow-hidden bg-stone border border-sage/15 shrink-0">
-          {value && (ytId ? (
-            <img src={`https://img.youtube.com/vi/${ytId}/default.jpg`} alt="" className="w-full h-full object-cover" />
-          ) : isVideoFile(value) ? (
-            <video src={value} className="w-full h-full object-cover" muted />
-          ) : (
-            <img src={value} alt="" className="w-full h-full object-cover" />
-          ))}
+          {value &&
+            (ytId ? (
+              <img
+                src={`https://img.youtube.com/vi/${ytId}/default.jpg`}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            ) : isVideoFile(value) ? (
+              <video src={value} className="w-full h-full object-cover" muted />
+            ) : (
+              <img src={value} alt="" className="w-full h-full object-cover" />
+            ))}
         </div>
         <div className="flex-1 space-y-2">
           <input
@@ -48,7 +55,10 @@ export function MediaPicker({
       </div>
 
       {open && (
-        <div className="fixed inset-0 z-50 bg-ink/50 flex items-center justify-center p-6" onClick={() => setOpen(false)}>
+        <div
+          className="fixed inset-0 z-50 bg-ink/50 flex items-center justify-center p-6"
+          onClick={() => setOpen(false)}
+        >
           <div
             className="bg-cream rounded-3xl p-6 max-w-3xl w-full max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
@@ -57,7 +67,11 @@ export function MediaPicker({
               <h3 className="font-serif text-xl">Select media</h3>
               <div className="flex items-center gap-4">
                 <UploadButton userId={userId} onUploaded={reload} />
-                <button type="button" onClick={() => setOpen(false)} className="text-[11px] uppercase tracking-[0.22em] text-ink/50">
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="text-[11px] uppercase tracking-[0.22em] text-ink/50"
+                >
                   Close
                 </button>
               </div>

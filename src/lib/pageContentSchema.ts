@@ -121,14 +121,20 @@ export const PAGE_CONTENT_SCHEMA: Record<string, PageSchema> = {
       label: "Contact details",
       fields: [
         { type: "text", key: "email", label: "Email" },
-        { type: "text", key: "whatsapp_number", label: "WhatsApp number (digits only, e.g. 442079460123)" },
+        {
+          type: "text",
+          key: "whatsapp_number",
+          label: "WhatsApp number (digits only, e.g. 442079460123)",
+        },
         { type: "textarea", key: "whatsapp_message", label: "WhatsApp prefill message" },
         { type: "text", key: "phone_display", label: "Phone (displayed)" },
       ],
     },
     concerns: {
       label: "Concern categories",
-      fields: [{ type: "string-list", key: "items", label: "Categories (used by the contact form)" }],
+      fields: [
+        { type: "string-list", key: "items", label: "Categories (used by the contact form)" },
+      ],
     },
     footer: {
       label: "Footer",
@@ -150,7 +156,10 @@ export const PAGE_LABELS: Record<string, string> = {
   global: "Site Settings",
 };
 
-export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, any>> = {
+// Content shape is per-section dynamic JSON edited freely through the CMS form builder,
+// so this stays loosely typed rather than declaring a rigid interface per section.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, Record<string, any>>> = {
   home: {
     hero: {
       badge: "New era of Ayurveda",
@@ -173,8 +182,14 @@ export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, any>> = {
       philosophy_body:
         "Our English-speaking team bridges Sanskrit medical texts and modern lifestyles, so your journey is precise, understood, and supported.",
       philosophy_cards: [
-        { title: "Disease Prevention", body: "Proactive immunity-building and metabolic alignment, before symptoms arrive." },
-        { title: "Lifestyle Diet", body: "Nutrition and routine tailored to your unique Dosha and daily reality." },
+        {
+          title: "Disease Prevention",
+          body: "Proactive immunity-building and metabolic alignment, before symptoms arrive.",
+        },
+        {
+          title: "Lifestyle Diet",
+          body: "Nutrition and routine tailored to your unique Dosha and daily reality.",
+        },
       ],
     },
     why_us: {
@@ -183,10 +198,22 @@ export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, any>> = {
       heading_highlight: "help you.",
       subheading: "Show up honest, we'll show up consistent. Here's what you get when you do.",
       items: [
-        { title: "Authenticated Degrees", body: "Senior physicians hold BAMS / MD credentials from India's most rigorous Ayurvedic medical colleges." },
-        { title: "Clinical Discretion", body: "Every patient relationship is governed by a strict NDA. Your records remain entirely private." },
-        { title: "English-Speaking Team", body: "Concierge coordinators translate ancient protocols into clear, modern, daily practice." },
-        { title: "Global Patient Care", body: "Remote consultations across 12 countries, with travel logistics for in-person care." },
+        {
+          title: "Authenticated Degrees",
+          body: "Senior physicians hold BAMS / MD credentials from India's most rigorous Ayurvedic medical colleges.",
+        },
+        {
+          title: "Clinical Discretion",
+          body: "Every patient relationship is governed by a strict NDA. Your records remain entirely private.",
+        },
+        {
+          title: "English-Speaking Team",
+          body: "Concierge coordinators translate ancient protocols into clear, modern, daily practice.",
+        },
+        {
+          title: "Global Patient Care",
+          body: "Remote consultations across 12 countries, with travel logistics for in-person care.",
+        },
       ],
     },
     pricing: {
@@ -268,7 +295,12 @@ export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, any>> = {
   },
 };
 
-export function mergeWithDefaults(page: string, section: string, content: Record<string, any> | null | undefined) {
+export function mergeWithDefaults(
+  page: string,
+  section: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content: Record<string, any> | null | undefined,
+) {
   const fallback = PAGE_CONTENT_DEFAULTS[page]?.[section] ?? {};
   return { ...fallback, ...(content ?? {}) };
 }

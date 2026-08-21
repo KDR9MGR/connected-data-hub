@@ -32,7 +32,12 @@ function Page() {
   const { data: post } = useQuery({
     queryKey: ["blog_post", slug],
     queryFn: async () => {
-      const { data } = await supabase.from("blog_posts").select("*").eq("slug", slug).eq("status", "published").maybeSingle();
+      const { data } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .eq("slug", slug)
+        .eq("status", "published")
+        .maybeSingle();
       return data ?? initial;
     },
     initialData: initial,
@@ -50,9 +55,15 @@ function Page() {
           {post.category && <span>{post.category}</span>}
           {post.read_time && <span>· {post.read_time}</span>}
         </div>
-        <h1 className="text-4xl md:text-6xl font-serif font-light leading-[1.05] mb-8">{post.title}</h1>
+        <h1 className="text-4xl md:text-6xl font-serif font-light leading-[1.05] mb-8">
+          {post.title}
+        </h1>
         {post.cover_image_url && (
-          <img src={post.cover_image_url} alt={post.title} className="w-full aspect-video object-cover rounded-2xl mb-10" />
+          <img
+            src={post.cover_image_url}
+            alt={post.title}
+            className="w-full aspect-video object-cover rounded-2xl mb-10"
+          />
         )}
         <div className="prose-content space-y-5 text-ink/75 leading-relaxed">
           {post.content.split(/\n{2,}/).map((para: string, i: number) => (

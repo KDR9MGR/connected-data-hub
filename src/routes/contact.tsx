@@ -6,7 +6,11 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact — Araya Veda" },
-      { name: "description", content: "Book a confidential Ayurvedic consultation. Submit the contact form or reach our clinic on WhatsApp." },
+      {
+        name: "description",
+        content:
+          "Book a confidential Ayurvedic consultation. Submit the contact form or reach our clinic on WhatsApp.",
+      },
       { property: "og:title", content: "Contact — Araya Veda" },
       { property: "og:description", content: "Confidential consultations, English-speaking team." },
     ],
@@ -19,13 +23,16 @@ function Page() {
     <article className="pt-32 md:pt-40 pb-24 px-6">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 md:gap-24">
         <div>
-          <span className="text-[10px] uppercase tracking-[0.3em] text-gold mb-4 block">Contact</span>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-gold mb-4 block">
+            Contact
+          </span>
           <h1 className="text-5xl md:text-7xl font-serif font-light leading-[1.05] mb-8">
-            Begin your <br /><span className="italic">consultation.</span>
+            Begin your <br />
+            <span className="italic">consultation.</span>
           </h1>
           <p className="text-ink/65 mb-10 max-w-md leading-relaxed">
-            Share a few details and our clinical team will respond within one working day.
-            For urgent matters, message us on WhatsApp.
+            Share a few details and our clinical team will respond within one working day. For
+            urgent matters, message us on WhatsApp.
           </p>
 
           <div className="space-y-5 mb-10">

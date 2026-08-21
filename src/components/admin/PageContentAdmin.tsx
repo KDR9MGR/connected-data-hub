@@ -1,34 +1,64 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 import { PAGE_CONTENT_SCHEMA, mergeWithDefaults, type Field } from "@/lib/pageContentSchema";
 import { MediaPicker } from "./MediaPicker";
 import { F, inp } from "./formPrimitives";
 
-function get(obj: any, key: string) {
+type ContentValue = Record<string, unknown>;
+
+function get(obj: ContentValue, key: string): unknown {
   return obj?.[key];
 }
-function set(obj: any, key: string, value: any) {
+function set(obj: ContentValue, key: string, value: unknown): ContentValue {
   return { ...obj, [key]: value };
 }
 
-function FieldEditor({ field, value, onChange, userId }: { field: Field; value: any; onChange: (v: any) => void; userId: string }) {
+function FieldEditor({
+  field,
+  value,
+  onChange,
+  userId,
+}: {
+  field: Field;
+  value: unknown;
+  onChange: (v: unknown) => void;
+  userId: string;
+}) {
   switch (field.type) {
     case "text":
       return (
         <F label={field.label}>
-          <input value={value ?? ""} placeholder={field.placeholder} onChange={(e) => onChange(e.target.value)} className={inp} />
+          <input
+            value={(value as string) ?? ""}
+            placeholder={field.placeholder}
+            onChange={(e) => onChange(e.target.value)}
+            className={inp}
+          />
         </F>
       );
     case "textarea":
       return (
         <F label={field.label}>
-          <textarea rows={3} value={value ?? ""} onChange={(e) => onChange(e.target.value)} className={`${inp} resize-none`} />
+          <textarea
+            rows={3}
+            value={(value as string) ?? ""}
+            onChange={(e) => onChange(e.target.value)}
+            className={`${inp} resize-none`}
+          />
         </F>
       );
     case "image":
-      return <MediaPicker userId={userId} label={field.label} value={value ?? ""} onChange={onChange} />;
+      return (
+        <MediaPicker
+          userId={userId}
+          label={field.label}
+          value={(value as string) ?? ""}
+          onChange={onChange}
+        />
+      );
     case "string-list": {
-      const list: string[] = Array.isArray(value) ? value : [];
+      const list: string[] = Array.isArray(value) ? (value as string[]) : [];
       return (
         <F label={field.label}>
           <div className="space-y-2">
@@ -43,12 +73,20 @@ function FieldEditor({ field, value, onChange, userId }: { field: Field; value: 
                   }}
                   className={inp}
                 />
-                <button type="button" onClick={() => onChange(list.filter((_, idx) => idx !== i))} className="text-destructive text-xs">
+                <button
+                  type="button"
+                  onClick={() => onChange(list.filter((_, idx) => idx !== i))}
+                  className="text-destructive text-xs"
+                >
                   ✕
                 </button>
               </div>
             ))}
-            <button type="button" onClick={() => onChange([...list, ""])} className="text-[11px] uppercase tracking-[0.18em] text-sage">
+            <button
+              type="button"
+              onClick={() => onChange([...list, ""])}
+              className="text-[11px] uppercase tracking-[0.18em] text-sage"
+            >
               + Add
             </button>
           </div>
@@ -56,10 +94,12 @@ function FieldEditor({ field, value, onChange, userId }: { field: Field; value: 
       );
     }
     case "list": {
-      const list: any[] = Array.isArray(value) ? value : [];
+      const list: ContentValue[] = Array.isArray(value) ? (value as ContentValue[]) : [];
       return (
         <div className="space-y-3">
-          <label className="text-[10px] uppercase tracking-[0.22em] font-semibold text-sage">{field.label}</label>
+          <label className="text-[10px] uppercase tracking-[0.22em] font-semibold text-sage">
+            {field.label}
+          </label>
           <div className="space-y-4">
             {list.map((item, i) => (
               <div key={i} className="p-4 rounded-xl bg-cream border border-sage/10 space-y-3">
@@ -130,9 +170,17 @@ function FieldEditor({ field, value, onChange, userId }: { field: Field; value: 
   }
 }
 
-function SectionEditor({ page, section, userId }: { page: string; section: string; userId: string }) {
+function SectionEditor({
+  page,
+  section,
+  userId,
+}: {
+  page: string;
+  section: string;
+  userId: string;
+}) {
   const schema = PAGE_CONTENT_SCHEMA[page][section];
-  const [content, setContent] = useState<Record<string, any> | null>(null);
+  const [content, setContent] = useState<ContentValue | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -145,12 +193,19 @@ function SectionEditor({ page, section, userId }: { page: string; section: strin
       .eq("page", page)
       .eq("section", section)
       .maybeSingle()
-      .then(({ data }) => setContent(mergeWithDefaults(page, section, data?.content as any)));
+      .then(({ data }) =>
+        setContent(mergeWithDefaults(page, section, data?.content as ContentValue | null)),
+      );
   }, [page, section]);
 
   async function save() {
     setSaving(true);
-    const { error } = await supabase.from("page_content").upsert({ page, section, content }, { onConflict: "page,section" });
+    const { error } = await supabase
+      .from("page_content")
+      .upsert(
+        { page, section, content: content as unknown as Json },
+        { onConflict: "page,section" },
+      );
     setSaving(false);
     if (error) return alert(error.message);
     setSaved(true);
@@ -167,14 +222,20 @@ function SectionEditor({ page, section, userId }: { page: string; section: strin
           field={field}
           value={get(content, field.key)}
           userId={userId}
-          onChange={(v) => setContent((c) => set(c, field.key, v))}
+          onChange={(v) => setContent((c) => set(c ?? {}, field.key, v))}
         />
       ))}
       <div className="flex items-center gap-4">
-        <button onClick={save} disabled={saving} className="bg-sage text-cream px-8 py-3 rounded-full text-[11px] uppercase tracking-[0.22em] hover:bg-ink disabled:opacity-50">
+        <button
+          onClick={save}
+          disabled={saving}
+          className="bg-sage text-cream px-8 py-3 rounded-full text-[11px] uppercase tracking-[0.22em] hover:bg-ink disabled:opacity-50"
+        >
           {saving ? "Saving…" : "Save"}
         </button>
-        {saved && <span className="text-[11px] uppercase tracking-[0.18em] text-sage">Saved ✓</span>}
+        {saved && (
+          <span className="text-[11px] uppercase tracking-[0.18em] text-sage">Saved ✓</span>
+        )}
       </div>
     </div>
   );

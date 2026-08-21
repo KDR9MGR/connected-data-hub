@@ -32,13 +32,22 @@ function destKey(d: Destination) {
 }
 
 function AdminPage() {
-  const { user, roles, loading, isEditor, isBlogger } = useAuth();
+  const { user, roles, loading, error, isEditor, isBlogger } = useAuth();
   const nav = useNavigate();
   const [active, setActive] = useState<Destination>({ group: "dashboard" });
 
   useEffect(() => {
-    if (!loading && !user) nav({ to: "/login" });
-  }, [loading, user, nav]);
+    if (!loading && !user && !error) nav({ to: "/login" });
+  }, [loading, user, error, nav]);
+
+  if (error) {
+    return (
+      <div className="pt-32 pb-24 px-6 max-w-md mx-auto text-center">
+        <h1 className="text-2xl font-serif mb-3">Can't connect</h1>
+        <p className="text-ink/60 text-sm">{error}</p>
+      </div>
+    );
+  }
 
   if (loading || !user) {
     return <div className="pt-32 pb-24 px-6 text-center text-ink/60 text-sm">Loading…</div>;
@@ -48,14 +57,31 @@ function AdminPage() {
     return (
       <div className="pt-32 pb-24 px-6 max-w-md mx-auto text-center">
         <h1 className="text-2xl font-serif mb-3">No access yet</h1>
-        <p className="text-ink/60 text-sm mb-6">Your account has no role assigned. Ask an editor to grant you access.</p>
-        <button onClick={() => supabase.auth.signOut().then(() => nav({ to: "/login" }))} className="text-[11px] uppercase tracking-[0.22em] text-sage border-b border-sage/40 pb-0.5">Sign out</button>
+        <p className="text-ink/60 text-sm mb-6">
+          Your account has no role assigned. Ask an editor to grant you access.
+        </p>
+        <button
+          onClick={() => supabase.auth.signOut().then(() => nav({ to: "/login" }))}
+          className="text-[11px] uppercase tracking-[0.22em] text-sage border-b border-sage/40 pb-0.5"
+        >
+          Sign out
+        </button>
       </div>
     );
   }
 
-  const pageDests: Destination[] = ["home", "treatment", "diet-lifestyle", "disease-prevention", "blog"].map((page) => ({ group: "pages", page }));
-  const collectionDests: { id: "blog" | "testimonials" | "portfolio" | "pricing" | "treatments"; label: string; show: boolean }[] = [
+  const pageDests: Destination[] = [
+    "home",
+    "treatment",
+    "diet-lifestyle",
+    "disease-prevention",
+    "blog",
+  ].map((page) => ({ group: "pages", page }));
+  const collectionDests: {
+    id: "blog" | "testimonials" | "portfolio" | "pricing" | "treatments";
+    label: string;
+    show: boolean;
+  }[] = [
     { id: "blog", label: "Blog Posts", show: isEditor || isBlogger },
     { id: "treatments", label: "Treatments / Conditions", show: isEditor },
     { id: "testimonials", label: "Testimonials", show: isEditor },
@@ -92,8 +118,10 @@ function AdminPage() {
               Signed in as {user.email} · {roles.join(", ") || "no role"}
             </p>
           </div>
-          <button onClick={() => supabase.auth.signOut().then(() => nav({ to: "/login" }))}
-            className="text-[11px] uppercase tracking-[0.22em] text-ink/60 border-b border-ink/20 hover:text-sage hover:border-sage pb-0.5">
+          <button
+            onClick={() => supabase.auth.signOut().then(() => nav({ to: "/login" }))}
+            className="text-[11px] uppercase tracking-[0.22em] text-ink/60 border-b border-ink/20 hover:text-sage hover:border-sage pb-0.5"
+          >
             Sign out
           </button>
         </div>
@@ -107,13 +135,20 @@ function AdminPage() {
             )}
             {(isEditor || isBlogger) && (
               <NavGroup title="Pages">
-                {pageDests.map((d) => d.group === "pages" && <NavItem key={d.page} dest={d} label={PAGE_LABELS[d.page]} />)}
+                {pageDests.map(
+                  (d) =>
+                    d.group === "pages" && (
+                      <NavItem key={d.page} dest={d} label={PAGE_LABELS[d.page]} />
+                    ),
+                )}
               </NavGroup>
             )}
             <NavGroup title="Collections">
-              {collectionDests.filter((c) => c.show).map((c) => (
-                <NavItem key={c.id} dest={{ group: "collections", id: c.id }} label={c.label} />
-              ))}
+              {collectionDests
+                .filter((c) => c.show)
+                .map((c) => (
+                  <NavItem key={c.id} dest={{ group: "collections", id: c.id }} label={c.label} />
+                ))}
             </NavGroup>
             {(isEditor || isBlogger) && (
               <NavGroup title="Library">
@@ -131,15 +166,31 @@ function AdminPage() {
 
           <div className="min-w-0">
             {active.group === "dashboard" && (isEditor || isBlogger) && <Dashboard />}
-            {active.group === "pages" && (isEditor || isBlogger) && <PageContentAdmin page={active.page} userId={user.id} />}
-            {active.group === "collections" && active.id === "blog" && (isEditor || isBlogger) && <BlogAdmin userId={user.id} isEditor={isEditor} />}
-            {active.group === "collections" && active.id === "treatments" && isEditor && <TreatmentItemsAdmin userId={user.id} />}
-            {active.group === "collections" && active.id === "testimonials" && isEditor && <TestimonialAdmin userId={user.id} />}
-            {active.group === "collections" && active.id === "portfolio" && isEditor && <PortfolioAdmin userId={user.id} />}
-            {active.group === "collections" && active.id === "pricing" && isEditor && <PricingAdmin />}
-            {active.group === "media" && (isEditor || isBlogger) && <MediaLibrary userId={user.id} />}
+            {active.group === "pages" && (isEditor || isBlogger) && (
+              <PageContentAdmin page={active.page} userId={user.id} />
+            )}
+            {active.group === "collections" && active.id === "blog" && (isEditor || isBlogger) && (
+              <BlogAdmin userId={user.id} isEditor={isEditor} />
+            )}
+            {active.group === "collections" && active.id === "treatments" && isEditor && (
+              <TreatmentItemsAdmin userId={user.id} />
+            )}
+            {active.group === "collections" && active.id === "testimonials" && isEditor && (
+              <TestimonialAdmin userId={user.id} />
+            )}
+            {active.group === "collections" && active.id === "portfolio" && isEditor && (
+              <PortfolioAdmin userId={user.id} />
+            )}
+            {active.group === "collections" && active.id === "pricing" && isEditor && (
+              <PricingAdmin />
+            )}
+            {active.group === "media" && (isEditor || isBlogger) && (
+              <MediaLibrary userId={user.id} />
+            )}
             {active.group === "theme" && isEditor && <ThemeAdmin />}
-            {active.group === "settings" && isEditor && <PageContentAdmin page="global" userId={user.id} />}
+            {active.group === "settings" && isEditor && (
+              <PageContentAdmin page="global" userId={user.id} />
+            )}
             {active.group === "inquiries" && isEditor && <SubmissionsAdmin />}
           </div>
         </div>

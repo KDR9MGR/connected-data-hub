@@ -37,8 +37,12 @@ export function ThemeAdmin() {
   async function save() {
     setSaving(true);
     const { error } = await supabase.from("page_content").upsert(
-      { page: "global", section: "theme", content: { accent_color: accent, background_color: background, heading_font: font } },
-      { onConflict: "page,section" }
+      {
+        page: "global",
+        section: "theme",
+        content: { accent_color: accent, background_color: background, heading_font: font },
+      },
+      { onConflict: "page,section" },
     );
     setSaving(false);
     if (error) return alert(error.message);
@@ -49,33 +53,58 @@ export function ThemeAdmin() {
   return (
     <div className="bg-stone rounded-3xl p-8 space-y-6 max-w-xl">
       <p className="text-xs text-ink/60">
-        Changes preview live across the site (including this admin panel) as you edit. Nothing is public until you save.
+        Changes preview live across the site (including this admin panel) as you edit. Nothing is
+        public until you save.
       </p>
       <F label="Accent color (buttons, links, sage tones)">
         <div className="flex items-center gap-3">
-          <input type="color" value={accent} onChange={(e) => setAccent(e.target.value)} className="size-10 rounded cursor-pointer border border-sage/20" />
+          <input
+            type="color"
+            value={accent}
+            onChange={(e) => setAccent(e.target.value)}
+            className="size-10 rounded cursor-pointer border border-sage/20"
+          />
           <span className="text-sm font-mono">{accent}</span>
         </div>
       </F>
       <F label="Background color (page canvas)">
         <div className="flex items-center gap-3">
-          <input type="color" value={background} onChange={(e) => setBackground(e.target.value)} className="size-10 rounded cursor-pointer border border-sage/20" />
+          <input
+            type="color"
+            value={background}
+            onChange={(e) => setBackground(e.target.value)}
+            className="size-10 rounded cursor-pointer border border-sage/20"
+          />
           <span className="text-sm font-mono">{background}</span>
         </div>
       </F>
       <F label="Heading font">
-        <select value={font} onChange={(e) => setFont(e.target.value)} className="w-full bg-transparent border-b border-sage/20 py-2 text-sm focus:outline-none focus:border-sage">
+        <select
+          value={font}
+          onChange={(e) => setFont(e.target.value)}
+          className="w-full bg-transparent border-b border-sage/20 py-2 text-sm focus:outline-none focus:border-sage"
+        >
           {HEADING_FONT_OPTIONS.map((f) => (
-            <option key={f} value={f} style={{ fontFamily: f }}>{f}</option>
+            <option key={f} value={f} style={{ fontFamily: f }}>
+              {f}
+            </option>
           ))}
         </select>
       </F>
-      <p className="font-serif text-3xl" style={{ fontFamily: `'${font}', serif` }}>Start caring for your health with us.</p>
+      <p className="font-serif text-3xl" style={{ fontFamily: `'${font}', serif` }}>
+        Start caring for your health with us.
+      </p>
       <div className="flex items-center gap-4">
-        <button onClick={save} disabled={saving} className="bg-sage text-cream px-8 py-3 rounded-full text-[11px] uppercase tracking-[0.22em] hover:bg-ink disabled:opacity-50">
+        <button
+          onClick={save}
+          disabled={saving}
+          className="bg-sage text-cream px-8 py-3 rounded-full text-[11px] uppercase tracking-[0.22em] hover:bg-ink disabled:opacity-50"
+        >
           {saving ? "Saving…" : "Save theme"}
         </button>
-        {saved && <span className="text-[11px] uppercase tracking-[0.18em] text-sage">Saved ✓</span>}
+        {saved && (
+          <span className="text-[11px] uppercase tracking-[0.18em] text-sage">Saved ✓</span>
+        )}
       </div>
     </div>
   );

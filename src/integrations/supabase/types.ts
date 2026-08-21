@@ -1,512 +1,500 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
-  }
+    PostgrestVersion: "14.5";
+  };
   public: {
     Tables: {
       blog_posts: {
         Row: {
-          author_id: string
-          category: string | null
-          content: string
-          cover_image_url: string | null
-          created_at: string
-          excerpt: string | null
-          id: string
-          published_at: string | null
-          read_time: string | null
-          slug: string
-          status: Database["public"]["Enums"]["post_status"]
-          title: string
-          updated_at: string
-        }
+          author_id: string;
+          category: string | null;
+          content: string;
+          cover_image_url: string | null;
+          created_at: string;
+          excerpt: string | null;
+          id: string;
+          published_at: string | null;
+          read_time: string | null;
+          slug: string;
+          status: Database["public"]["Enums"]["post_status"];
+          title: string;
+          updated_at: string;
+        };
         Insert: {
-          author_id: string
-          category?: string | null
-          content?: string
-          cover_image_url?: string | null
-          created_at?: string
-          excerpt?: string | null
-          id?: string
-          published_at?: string | null
-          read_time?: string | null
-          slug: string
-          status?: Database["public"]["Enums"]["post_status"]
-          title: string
-          updated_at?: string
-        }
+          author_id: string;
+          category?: string | null;
+          content?: string;
+          cover_image_url?: string | null;
+          created_at?: string;
+          excerpt?: string | null;
+          id?: string;
+          published_at?: string | null;
+          read_time?: string | null;
+          slug: string;
+          status?: Database["public"]["Enums"]["post_status"];
+          title: string;
+          updated_at?: string;
+        };
         Update: {
-          author_id?: string
-          category?: string | null
-          content?: string
-          cover_image_url?: string | null
-          created_at?: string
-          excerpt?: string | null
-          id?: string
-          published_at?: string | null
-          read_time?: string | null
-          slug?: string
-          status?: Database["public"]["Enums"]["post_status"]
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          author_id?: string;
+          category?: string | null;
+          content?: string;
+          cover_image_url?: string | null;
+          created_at?: string;
+          excerpt?: string | null;
+          id?: string;
+          published_at?: string | null;
+          read_time?: string | null;
+          slug?: string;
+          status?: Database["public"]["Enums"]["post_status"];
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       contact_submissions: {
         Row: {
-          body: string
-          created_at: string
-          disease: string | null
-          email: string
-          id: string
-          is_read: boolean
-          name: string
-          phone: string | null
-          subject: string | null
-        }
+          body: string;
+          created_at: string;
+          disease: string | null;
+          email: string;
+          id: string;
+          is_read: boolean;
+          name: string;
+          phone: string | null;
+          subject: string | null;
+        };
         Insert: {
-          body: string
-          created_at?: string
-          disease?: string | null
-          email: string
-          id?: string
-          is_read?: boolean
-          name: string
-          phone?: string | null
-          subject?: string | null
-        }
+          body: string;
+          created_at?: string;
+          disease?: string | null;
+          email: string;
+          id?: string;
+          is_read?: boolean;
+          name: string;
+          phone?: string | null;
+          subject?: string | null;
+        };
         Update: {
-          body?: string
-          created_at?: string
-          disease?: string | null
-          email?: string
-          id?: string
-          is_read?: boolean
-          name?: string
-          phone?: string | null
-          subject?: string | null
-        }
-        Relationships: []
-      }
+          body?: string;
+          created_at?: string;
+          disease?: string | null;
+          email?: string;
+          id?: string;
+          is_read?: boolean;
+          name?: string;
+          phone?: string | null;
+          subject?: string | null;
+        };
+        Relationships: [];
+      };
       media_assets: {
         Row: {
-          alt_text: string | null
-          created_at: string
-          file_name: string
-          id: string
-          kind: string
-          mime_type: string
-          size_bytes: number | null
-          storage_path: string
-          uploaded_by: string | null
-          url: string
-        }
+          alt_text: string | null;
+          created_at: string;
+          file_name: string;
+          id: string;
+          kind: string;
+          mime_type: string;
+          size_bytes: number | null;
+          storage_path: string;
+          uploaded_by: string | null;
+          url: string;
+        };
         Insert: {
-          alt_text?: string | null
-          created_at?: string
-          file_name: string
-          id?: string
-          kind: string
-          mime_type: string
-          size_bytes?: number | null
-          storage_path: string
-          uploaded_by?: string | null
-          url: string
-        }
+          alt_text?: string | null;
+          created_at?: string;
+          file_name: string;
+          id?: string;
+          kind: string;
+          mime_type: string;
+          size_bytes?: number | null;
+          storage_path: string;
+          uploaded_by?: string | null;
+          url: string;
+        };
         Update: {
-          alt_text?: string | null
-          created_at?: string
-          file_name?: string
-          id?: string
-          kind?: string
-          mime_type?: string
-          size_bytes?: number | null
-          storage_path?: string
-          uploaded_by?: string | null
-          url?: string
-        }
-        Relationships: []
-      }
+          alt_text?: string | null;
+          created_at?: string;
+          file_name?: string;
+          id?: string;
+          kind?: string;
+          mime_type?: string;
+          size_bytes?: number | null;
+          storage_path?: string;
+          uploaded_by?: string | null;
+          url?: string;
+        };
+        Relationships: [];
+      };
       page_content: {
         Row: {
-          content: Json
-          id: string
-          page: string
-          section: string
-          updated_at: string
-        }
+          content: Json;
+          id: string;
+          page: string;
+          section: string;
+          updated_at: string;
+        };
         Insert: {
-          content?: Json
-          id?: string
-          page: string
-          section: string
-          updated_at?: string
-        }
+          content?: Json;
+          id?: string;
+          page: string;
+          section: string;
+          updated_at?: string;
+        };
         Update: {
-          content?: Json
-          id?: string
-          page?: string
-          section?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          content?: Json;
+          id?: string;
+          page?: string;
+          section?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       portfolio_items: {
         Row: {
-          category: string
-          created_at: string
-          description: string | null
-          id: string
-          image_url: string | null
-          is_published: boolean
-          sort_order: number
-          title: string
-          updated_at: string
-        }
+          category: string;
+          created_at: string;
+          description: string | null;
+          id: string;
+          image_url: string | null;
+          is_published: boolean;
+          sort_order: number;
+          title: string;
+          updated_at: string;
+        };
         Insert: {
-          category: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          is_published?: boolean
-          sort_order?: number
-          title: string
-          updated_at?: string
-        }
+          category: string;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          image_url?: string | null;
+          is_published?: boolean;
+          sort_order?: number;
+          title: string;
+          updated_at?: string;
+        };
         Update: {
-          category?: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          is_published?: boolean
-          sort_order?: number
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          category?: string;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          image_url?: string | null;
+          is_published?: boolean;
+          sort_order?: number;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       pricing_plans: {
         Row: {
-          created_at: string
-          description: string | null
-          features: Json
-          id: string
-          is_featured: boolean
-          is_published: boolean
-          name: string
-          price_label: string
-          sort_order: number
-          updated_at: string
-        }
+          created_at: string;
+          description: string | null;
+          features: Json;
+          id: string;
+          is_featured: boolean;
+          is_published: boolean;
+          name: string;
+          price_label: string;
+          sort_order: number;
+          updated_at: string;
+        };
         Insert: {
-          created_at?: string
-          description?: string | null
-          features?: Json
-          id?: string
-          is_featured?: boolean
-          is_published?: boolean
-          name: string
-          price_label: string
-          sort_order?: number
-          updated_at?: string
-        }
+          created_at?: string;
+          description?: string | null;
+          features?: Json;
+          id?: string;
+          is_featured?: boolean;
+          is_published?: boolean;
+          name: string;
+          price_label: string;
+          sort_order?: number;
+          updated_at?: string;
+        };
         Update: {
-          created_at?: string
-          description?: string | null
-          features?: Json
-          id?: string
-          is_featured?: boolean
-          is_published?: boolean
-          name?: string
-          price_label?: string
-          sort_order?: number
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          created_at?: string;
+          description?: string | null;
+          features?: Json;
+          id?: string;
+          is_featured?: boolean;
+          is_published?: boolean;
+          name?: string;
+          price_label?: string;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       profiles: {
         Row: {
-          avatar_url: string | null
-          bio: string | null
-          created_at: string
-          display_name: string | null
-          id: string
-          updated_at: string
-        }
+          avatar_url: string | null;
+          bio: string | null;
+          created_at: string;
+          display_name: string | null;
+          id: string;
+          updated_at: string;
+        };
         Insert: {
-          avatar_url?: string | null
-          bio?: string | null
-          created_at?: string
-          display_name?: string | null
-          id: string
-          updated_at?: string
-        }
+          avatar_url?: string | null;
+          bio?: string | null;
+          created_at?: string;
+          display_name?: string | null;
+          id: string;
+          updated_at?: string;
+        };
         Update: {
-          avatar_url?: string | null
-          bio?: string | null
-          created_at?: string
-          display_name?: string | null
-          id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          avatar_url?: string | null;
+          bio?: string | null;
+          created_at?: string;
+          display_name?: string | null;
+          id?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       testimonials: {
         Row: {
-          author_location: string | null
-          author_name: string
-          created_at: string
-          id: string
-          is_published: boolean
-          media_type: string
-          media_url: string | null
-          quote: string
-          rating: number | null
-          sort_order: number
-          updated_at: string
-        }
+          author_location: string | null;
+          author_name: string;
+          created_at: string;
+          id: string;
+          is_published: boolean;
+          media_type: string;
+          media_url: string | null;
+          quote: string;
+          rating: number | null;
+          sort_order: number;
+          updated_at: string;
+        };
         Insert: {
-          author_location?: string | null
-          author_name: string
-          created_at?: string
-          id?: string
-          is_published?: boolean
-          media_type?: string
-          media_url?: string | null
-          quote: string
-          rating?: number | null
-          sort_order?: number
-          updated_at?: string
-        }
+          author_location?: string | null;
+          author_name: string;
+          created_at?: string;
+          id?: string;
+          is_published?: boolean;
+          media_type?: string;
+          media_url?: string | null;
+          quote: string;
+          rating?: number | null;
+          sort_order?: number;
+          updated_at?: string;
+        };
         Update: {
-          author_location?: string | null
-          author_name?: string
-          created_at?: string
-          id?: string
-          is_published?: boolean
-          media_type?: string
-          media_url?: string | null
-          quote?: string
-          rating?: number | null
-          sort_order?: number
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          author_location?: string | null;
+          author_name?: string;
+          created_at?: string;
+          id?: string;
+          is_published?: boolean;
+          media_type?: string;
+          media_url?: string | null;
+          quote?: string;
+          rating?: number | null;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       treatment_items: {
         Row: {
-          body: string | null
-          category: string | null
-          created_at: string
-          description: string | null
-          id: string
-          is_published: boolean
-          media_url: string | null
-          pages: string[]
-          sort_order: number
-          title: string
-          updated_at: string
-        }
+          body: string | null;
+          category: string | null;
+          created_at: string;
+          description: string | null;
+          id: string;
+          is_published: boolean;
+          media_url: string | null;
+          pages: string[];
+          sort_order: number;
+          title: string;
+          updated_at: string;
+        };
         Insert: {
-          body?: string | null
-          category?: string | null
-          created_at?: string
-          description?: string | null
-          id?: string
-          is_published?: boolean
-          media_url?: string | null
-          pages?: string[]
-          sort_order?: number
-          title: string
-          updated_at?: string
-        }
+          body?: string | null;
+          category?: string | null;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          is_published?: boolean;
+          media_url?: string | null;
+          pages?: string[];
+          sort_order?: number;
+          title: string;
+          updated_at?: string;
+        };
         Update: {
-          body?: string | null
-          category?: string | null
-          created_at?: string
-          description?: string | null
-          id?: string
-          is_published?: boolean
-          media_url?: string | null
-          pages?: string[]
-          sort_order?: number
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          body?: string | null;
+          category?: string | null;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          is_published?: boolean;
+          media_url?: string | null;
+          pages?: string[];
+          sort_order?: number;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       user_roles: {
         Row: {
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
+          created_at: string;
+          id: string;
+          role: Database["public"]["Enums"]["app_role"];
+          user_id: string;
+        };
         Insert: {
-          created_at?: string
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
+          created_at?: string;
+          id?: string;
+          role: Database["public"]["Enums"]["app_role"];
+          user_id: string;
+        };
         Update: {
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
-        Relationships: []
-      }
-    }
+          created_at?: string;
+          id?: string;
+          role?: Database["public"]["Enums"]["app_role"];
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
       has_role: {
         Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
-    }
+          _role: Database["public"]["Enums"]["app_role"];
+          _user_id: string;
+        };
+        Returns: boolean;
+      };
+    };
     Enums: {
-      app_role: "editor" | "blogger" | "admin"
-      post_status: "draft" | "published"
-    }
+      app_role: "editor" | "blogger" | "admin";
+      post_status: "draft" | "published";
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">];
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] & DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    keyof DefaultSchema["Enums"] | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    keyof DefaultSchema["CompositeTypes"] | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+    : never;
 
 export const Constants = {
   public: {
@@ -515,4 +503,4 @@ export const Constants = {
       post_status: ["draft", "published"],
     },
   },
-} as const
+} as const;

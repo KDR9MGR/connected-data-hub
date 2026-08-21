@@ -16,7 +16,9 @@ export function ConsultWhatsapp({ variant = "default" }: { variant?: "default" |
         rel="noopener noreferrer"
         className="block bg-sage text-cream rounded-2xl p-8 hover:bg-ink transition-colors"
       >
-        <div className="text-[10px] uppercase tracking-[0.22em] text-cream/60 mb-3">Immediate consult</div>
+        <div className="text-[10px] uppercase tracking-[0.22em] text-cream/60 mb-3">
+          Immediate consult
+        </div>
         <div className="text-2xl font-serif mb-3">Message us on WhatsApp</div>
         <p className="text-sm text-cream/70 max-w-xs mb-6">
           Speak directly with our lead coordinator for clinical availability and travel logistics.

@@ -44,11 +44,16 @@ export function useMediaAssets() {
 
   async function load() {
     setLoading(true);
-    const { data } = await supabase.from("media_assets").select("*").order("created_at", { ascending: false });
+    const { data } = await supabase
+      .from("media_assets")
+      .select("*")
+      .order("created_at", { ascending: false });
     setItems((data as MediaAsset[]) ?? []);
     setLoading(false);
   }
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   return { items, loading, reload: load };
 }
@@ -65,12 +70,19 @@ export function MediaGrid({
   onDelete?: (item: MediaAsset) => void;
 }) {
   if (items.length === 0) {
-    return <div className="text-center text-ink/50 py-16 border border-dashed border-sage/20 rounded-2xl text-sm">No media uploaded yet.</div>;
+    return (
+      <div className="text-center text-ink/50 py-16 border border-dashed border-sage/20 rounded-2xl text-sm">
+        No media uploaded yet.
+      </div>
+    );
   }
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       {items.map((m) => (
-        <div key={m.id} className="group relative rounded-xl overflow-hidden bg-stone border border-sage/10">
+        <div
+          key={m.id}
+          className="group relative rounded-xl overflow-hidden bg-stone border border-sage/10"
+        >
           <button
             type="button"
             onClick={() => selectable && onSelect?.(m)}
@@ -79,7 +91,12 @@ export function MediaGrid({
             {m.kind === "video" ? (
               <video src={m.url} className="w-full h-full object-cover" muted />
             ) : (
-              <img src={m.url} alt={m.alt_text ?? m.file_name} className="w-full h-full object-cover" loading="lazy" />
+              <img
+                src={m.url}
+                alt={m.alt_text ?? m.file_name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
             )}
           </button>
           <div className="absolute inset-x-0 bottom-0 bg-ink/60 px-2 py-1 flex items-center justify-between gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -109,7 +126,13 @@ export function MediaGrid({
   );
 }
 
-export function UploadButton({ userId, onUploaded }: { userId: string; onUploaded: (asset: MediaAsset) => void }) {
+export function UploadButton({
+  userId,
+  onUploaded,
+}: {
+  userId: string;
+  onUploaded: (asset: MediaAsset) => void;
+}) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
 
@@ -121,8 +144,8 @@ export function UploadButton({ userId, onUploaded }: { userId: string; onUploade
         const asset = await uploadMedia(file, userId);
         onUploaded(asset);
       }
-    } catch (e: any) {
-      alert(e.message ?? "Upload failed");
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Upload failed");
     } finally {
       setBusy(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -164,7 +187,9 @@ export function MediaLibrary({ userId }: { userId: string }) {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <p className="text-xs text-ink/60">{loading ? "Loading…" : `${items.length} file${items.length === 1 ? "" : "s"}`}</p>
+        <p className="text-xs text-ink/60">
+          {loading ? "Loading…" : `${items.length} file${items.length === 1 ? "" : "s"}`}
+        </p>
         <UploadButton userId={userId} onUploaded={reload} />
       </div>
       <MediaGrid items={items} onDelete={del} />

@@ -13,18 +13,50 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Araya Veda — Clinical Ayurveda for the Modern Soul" },
-      { name: "description", content: "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice." },
+      {
+        name: "description",
+        content:
+          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
+      },
       { property: "og:title", content: "Araya Veda — Clinical Ayurveda" },
-      { property: "og:description", content: "Holistic disease prevention, treatment and diet & lifestyle care, delivered with discretion." },
-      { property: "og:image", content: "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=ayurveda%20wellness%20clinic%20hero%20banner%2C%20warm%20earth%20tones%2C%20herbs%2C%20zen%20stones%2C%20lotus%20flower%2C%20gold%20accents%2C%20professional%20healthcare&image_size=landscape_16_9" },
+      {
+        property: "og:description",
+        content:
+          "Holistic disease prevention, treatment and diet & lifestyle care, delivered with discretion.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=ayurveda%20wellness%20clinic%20hero%20banner%2C%20warm%20earth%20tones%2C%20herbs%2C%20zen%20stones%2C%20lotus%20flower%2C%20gold%20accents%2C%20professional%20healthcare&image_size=landscape_16_9",
+      },
     ],
   }),
   component: Home,
 });
 
-type PortfolioItem = { id: string; category: string; title: string; description: string | null; image_url: string | null };
-type PricingPlan = { id: string; name: string; price_label: string; description: string | null; features: string[]; is_featured: boolean };
-type Testimonial = { id: string; author_name: string; author_location: string | null; quote: string; media_type: string; media_url: string | null };
+type PortfolioItem = {
+  id: string;
+  category: string;
+  title: string;
+  description: string | null;
+  image_url: string | null;
+};
+type PricingPlan = {
+  id: string;
+  name: string;
+  price_label: string;
+  description: string | null;
+  features: string[];
+  is_featured: boolean;
+};
+type Testimonial = {
+  id: string;
+  author_name: string;
+  author_location: string | null;
+  quote: string;
+  media_type: string;
+  media_url: string | null;
+};
 
 function Home() {
   return (
@@ -58,9 +90,12 @@ function Hero() {
             <span className="size-1.5 rounded-full bg-gold animate-pulse" /> {hero.badge}
           </span>
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light leading-[1.05] mb-5">
-            {hero.heading_line1} <span className="italic text-gold">{hero.heading_highlight}</span> {hero.heading_line2}
+            {hero.heading_line1} <span className="italic text-gold">{hero.heading_highlight}</span>{" "}
+            {hero.heading_line2}
           </h1>
-          <p className="text-base md:text-lg text-ink/70 max-w-md mb-7 leading-relaxed">{hero.subtext}</p>
+          <p className="text-base md:text-lg text-ink/70 max-w-md mb-7 leading-relaxed">
+            {hero.subtext}
+          </p>
           <div className="flex flex-wrap gap-3">
             <Link
               to="/treatment"
@@ -124,7 +159,9 @@ function Numbers() {
           {items.map((i) => (
             <div key={i.label} className="space-y-2">
               <div className="text-3xl md:text-4xl font-serif text-sage">{i.value}</div>
-              <div className="text-[10px] md:text-xs uppercase tracking-[0.22em] font-semibold text-ink/80">{i.label}</div>
+              <div className="text-[10px] md:text-xs uppercase tracking-[0.22em] font-semibold text-ink/80">
+                {i.label}
+              </div>
             </div>
           ))}
         </div>
@@ -178,8 +215,12 @@ function Portfolio() {
             <p className="text-ink/60">Clinical excellence across chronic and acute conditions.</p>
           </div>
           <div className="flex gap-3">
-            <TabPill active={tab === "Diseases"} onClick={() => setTab("Diseases")}>Diseases</TabPill>
-            <TabPill active={tab === "Diet & Lifestyle"} onClick={() => setTab("Diet & Lifestyle")}>Diet & Lifestyle</TabPill>
+            <TabPill active={tab === "Diseases"} onClick={() => setTab("Diseases")}>
+              Diseases
+            </TabPill>
+            <TabPill active={tab === "Diet & Lifestyle"} onClick={() => setTab("Diet & Lifestyle")}>
+              Diet & Lifestyle
+            </TabPill>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -198,7 +239,9 @@ function Portfolio() {
                 )}
               </div>
               <h3 className="text-xl font-serif mb-1">{it.title}</h3>
-              <p className="text-[10px] uppercase tracking-[0.22em] text-gold mb-2">{it.category}</p>
+              <p className="text-[10px] uppercase tracking-[0.22em] text-gold mb-2">
+                {it.category}
+              </p>
               <p className="text-sm text-ink/60 leading-relaxed">{it.description}</p>
             </article>
           ))}
@@ -208,7 +251,15 @@ function Portfolio() {
   );
 }
 
-function TabPill({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function TabPill({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
   return (
     <button
       onClick={onClick}
@@ -227,7 +278,11 @@ function Pricing() {
   const { data: plans } = useQuery({
     queryKey: ["pricing_plans_published"],
     queryFn: async () => {
-      const { data } = await supabase.from("pricing_plans").select("*").eq("is_published", true).order("sort_order");
+      const { data } = await supabase
+        .from("pricing_plans")
+        .select("*")
+        .eq("is_published", true)
+        .order("sort_order");
       return (data as PricingPlan[]) ?? [];
     },
   });
@@ -235,24 +290,48 @@ function Pricing() {
   return (
     <section className="py-24 md:py-28 bg-sage text-cream px-6">
       <div className="max-w-3xl mx-auto text-center">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-cream/60 mb-6 block">{content.kicker}</span>
+        <span className="text-[10px] uppercase tracking-[0.3em] text-cream/60 mb-6 block">
+          {content.kicker}
+        </span>
         <h2 className="text-4xl md:text-5xl font-serif mb-8">{content.heading}</h2>
         <p className="text-lg opacity-80 mb-10 leading-relaxed">{content.body}</p>
         <div className="h-px w-24 bg-gold mx-auto mb-10" />
         <div className="grid sm:grid-cols-3 gap-6 text-left">
           {plans?.map((p) => (
-            <PriceTile key={p.id} kicker={p.price_label} title={p.name} detail={p.description ?? ""} highlight={p.is_featured} />
+            <PriceTile
+              key={p.id}
+              kicker={p.price_label}
+              title={p.name}
+              detail={p.description ?? ""}
+              highlight={p.is_featured}
+            />
           ))}
         </div>
-        <p className="mt-10 text-xs uppercase tracking-[0.22em] text-cream/60">{content.footnote}</p>
+        <p className="mt-10 text-xs uppercase tracking-[0.22em] text-cream/60">
+          {content.footnote}
+        </p>
       </div>
     </section>
   );
 }
 
-function PriceTile({ kicker, title, detail, highlight }: { kicker: string; title: string; detail: string; highlight?: boolean }) {
+function PriceTile({
+  kicker,
+  title,
+  detail,
+  highlight,
+}: {
+  kicker: string;
+  title: string;
+  detail: string;
+  highlight?: boolean;
+}) {
   return (
-    <div className={"p-6 rounded-2xl border " + (highlight ? "border-gold/40 bg-cream/5" : "border-cream/15")}>
+    <div
+      className={
+        "p-6 rounded-2xl border " + (highlight ? "border-gold/40 bg-cream/5" : "border-cream/15")
+      }
+    >
       <div className="text-[10px] uppercase tracking-[0.22em] text-gold mb-3">{kicker}</div>
       <div className="font-serif text-2xl mb-2">{title}</div>
       <p className="text-sm text-cream/70 leading-relaxed">{detail}</p>
@@ -268,8 +347,12 @@ function WhyUs() {
     <section className="py-20 md:py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="max-w-2xl mb-14">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-gold mb-3 block">{content.kicker}</span>
-          <h2 className="text-4xl md:text-5xl font-serif">{content.heading} <span className="italic text-gold">{content.heading_highlight}</span></h2>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-gold mb-3 block">
+            {content.kicker}
+          </span>
+          <h2 className="text-4xl md:text-5xl font-serif">
+            {content.heading} <span className="italic text-gold">{content.heading_highlight}</span>
+          </h2>
           <p className="mt-4 text-ink/65 leading-relaxed">{content.subheading}</p>
         </div>
         <div className="grid md:grid-cols-2 gap-x-16 gap-y-10 border-t border-sage/10">
@@ -310,18 +393,34 @@ function Testimonials() {
     <section className="py-20 md:py-24 px-6 bg-stone/60">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-gold mb-3 block">{content.kicker}</span>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-gold mb-3 block">
+            {content.kicker}
+          </span>
           <h2 className="text-4xl md:text-5xl font-serif">{content.heading}</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {items?.map((t) => (
             <div key={t.id} className="space-y-4">
-              {t.media_url && (
-                parseYoutubeId(t.media_url) || isVideoFile(t.media_url) ? (
-                  <MediaDisplay url={t.media_url} alt={`${t.author_name} testimonial`} className="w-full rounded-2xl overflow-hidden" />
+              {t.media_url &&
+                (parseYoutubeId(t.media_url) || isVideoFile(t.media_url) ? (
+                  <MediaDisplay
+                    url={t.media_url}
+                    alt={`${t.author_name} testimonial`}
+                    className="w-full rounded-2xl overflow-hidden"
+                  />
                 ) : t.media_type === "video" ? (
-                  <a href={waUrl} target="_blank" rel="noopener noreferrer" className="relative block rounded-2xl overflow-hidden aspect-video group">
-                    <img src={t.media_url} alt={`${t.author_name} testimonial`} loading="lazy" className="w-full h-full object-cover" />
+                  <a
+                    href={waUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative block rounded-2xl overflow-hidden aspect-video group"
+                  >
+                    <img
+                      src={t.media_url}
+                      alt={`${t.author_name} testimonial`}
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
                     <div className="absolute inset-0 bg-ink/15 group-hover:bg-ink/25 transition-colors" />
                     <div className="absolute inset-0 grid place-items-center">
                       <div className="size-14 rounded-full bg-cream flex items-center justify-center shadow-lg">
@@ -330,12 +429,17 @@ function Testimonials() {
                     </div>
                   </a>
                 ) : (
-                  <img src={t.media_url} alt={`${t.author_name} testimonial`} loading="lazy" className="w-full aspect-[4/3] object-cover rounded-2xl" />
-                )
-              )}
+                  <img
+                    src={t.media_url}
+                    alt={`${t.author_name} testimonial`}
+                    loading="lazy"
+                    className="w-full aspect-[4/3] object-cover rounded-2xl"
+                  />
+                ))}
               <p className="font-serif italic text-lg text-sage leading-snug">“{t.quote}”</p>
               <p className="text-[10px] uppercase tracking-[0.22em] text-ink/60">
-                — {t.author_name}{t.author_location ? `, ${t.author_location}` : ""}
+                — {t.author_name}
+                {t.author_location ? `, ${t.author_location}` : ""}
               </p>
             </div>
           ))}
@@ -353,9 +457,12 @@ function Contact() {
     <section id="contact" className="py-20 md:py-24 px-6">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 md:gap-24">
         <div>
-          <span className="text-[10px] uppercase tracking-[0.3em] text-gold mb-4 block">{content.kicker}</span>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-gold mb-4 block">
+            {content.kicker}
+          </span>
           <h2 className="text-4xl md:text-6xl font-serif mb-8 leading-[1.05]">
-            {content.heading_line1} <br /><span className="italic">{content.heading_highlight}</span>
+            {content.heading_line1} <br />
+            <span className="italic">{content.heading_highlight}</span>
           </h2>
           <p className="text-ink/65 mb-10 max-w-md leading-relaxed">{content.body}</p>
           <div className="space-y-5 mb-10">

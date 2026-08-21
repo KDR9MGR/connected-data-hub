@@ -1,6 +1,14 @@
 import { parseYoutubeId, isVideoFile } from "@/lib/youtube";
 
-export function MediaDisplay({ url, alt, className }: { url: string; alt: string; className?: string }) {
+export function MediaDisplay({
+  url,
+  alt,
+  className,
+}: {
+  url: string;
+  alt: string;
+  className?: string;
+}) {
   const ytId = parseYoutubeId(url);
   if (ytId) {
     return (

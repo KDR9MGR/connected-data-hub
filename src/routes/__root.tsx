@@ -76,17 +76,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Araya Veda — Clinical Ayurveda for the Modern Soul" },
-      { name: "description", content: "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice." },
+      {
+        name: "description",
+        content:
+          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
+      },
       { name: "author", content: "Swāstha" },
       { property: "og:title", content: "Araya Veda — Clinical Ayurveda for the Modern Soul" },
-      { property: "og:description", content: "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice." },
+      {
+        property: "og:description",
+        content:
+          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "Araya Veda — Clinical Ayurveda for the Modern Soul" },
-      { name: "twitter:description", content: "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/MjaykppLJMTyiBPNWVlb7fYGg063/social-images/social-1783233282736-WhatsApp_Image_2026-06-12_at_11.31.03_PM_(2).webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/MjaykppLJMTyiBPNWVlb7fYGg063/social-images/social-1783233282736-WhatsApp_Image_2026-06-12_at_11.31.03_PM_(2).webp" },
+      {
+        name: "twitter:description",
+        content:
+          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/MjaykppLJMTyiBPNWVlb7fYGg063/social-images/social-1783233282736-WhatsApp_Image_2026-06-12_at_11.31.03_PM_(2).webp",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/MjaykppLJMTyiBPNWVlb7fYGg063/social-images/social-1783233282736-WhatsApp_Image_2026-06-12_at_11.31.03_PM_(2).webp",
+      },
     ],
     links: [
       {
