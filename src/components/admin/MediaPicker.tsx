@@ -66,7 +66,7 @@ export function MediaPicker({
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-serif text-xl">Select media</h3>
               <div className="flex items-center gap-4">
-                <UploadButton userId={userId} onUploaded={reload} />
+                <UploadButton userId={userId} onUploaded={() => reload()} />
                 <button
                   type="button"
                   onClick={() => setOpen(false)}

@@ -9,6 +9,7 @@ export type MediaAsset = {
   mime_type: string;
   kind: "image" | "video";
   alt_text: string | null;
+  size_bytes: number | null;
   created_at: string;
 };
 
@@ -58,6 +59,99 @@ export function useMediaAssets() {
   return { items, loading, reload: load };
 }
 
+async function copyToClipboard(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    window.prompt("Copy this URL:", text);
+    return false;
+  }
+}
+
+function formatSize(bytes?: number) {
+  if (!bytes) return "";
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function MediaRow({
+  item,
+  onSelect,
+  selectable,
+  onDelete,
+}: {
+  item: MediaAsset;
+  onSelect?: (item: MediaAsset) => void;
+  selectable?: boolean;
+  onDelete?: (item: MediaAsset) => void;
+}) {
+  const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    await copyToClipboard(item.url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  }
+
+  return (
+    <div className="flex items-center gap-4 p-3 rounded-xl bg-stone border border-sage/10">
+      <button
+        type="button"
+        onClick={() => selectable && onSelect?.(item)}
+        className={`shrink-0 size-16 rounded-lg overflow-hidden bg-cream border border-sage/10 ${selectable ? "cursor-pointer" : "cursor-default"}`}
+      >
+        {item.kind === "video" ? (
+          <video src={item.url} className="w-full h-full object-cover" muted />
+        ) : (
+          <img
+            src={item.url}
+            alt={item.alt_text ?? item.file_name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        )}
+      </button>
+
+      <div className="min-w-0 flex-1">
+        <div className="text-sm font-medium truncate">{item.file_name}</div>
+        <div className="text-[10px] uppercase tracking-[0.18em] text-ink/40 mt-0.5">
+          {item.kind} · {formatSize(item.size_bytes ?? undefined)} ·{" "}
+          {new Date(item.created_at).toLocaleDateString()}
+        </div>
+        <div className="flex items-center gap-2 mt-1.5">
+          <input
+            readOnly
+            value={item.url}
+            onFocus={(e) => e.currentTarget.select()}
+            className="flex-1 min-w-0 bg-transparent text-[11px] text-ink/50 border border-sage/10 rounded px-2 py-1 truncate focus:outline-none focus:border-sage/40"
+          />
+        </div>
+      </div>
+
+      <div className="flex gap-3 shrink-0">
+        <button
+          type="button"
+          onClick={copy}
+          className={`text-[11px] uppercase tracking-[0.18em] border-b pb-0.5 whitespace-nowrap ${copied ? "text-sage border-sage" : "text-sage/80 border-sage/40 hover:text-sage"}`}
+        >
+          {copied ? "Copied ✓" : "Copy URL"}
+        </button>
+        {onDelete && (
+          <button
+            type="button"
+            onClick={() => onDelete(item)}
+            className="text-[11px] uppercase tracking-[0.18em] text-destructive border-b border-destructive/40 pb-0.5 whitespace-nowrap"
+          >
+            Delete
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function MediaGrid({
   items,
   onSelect,
@@ -77,50 +171,15 @@ export function MediaGrid({
     );
   }
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <div className="space-y-2">
       {items.map((m) => (
-        <div
+        <MediaRow
           key={m.id}
-          className="group relative rounded-xl overflow-hidden bg-stone border border-sage/10"
-        >
-          <button
-            type="button"
-            onClick={() => selectable && onSelect?.(m)}
-            className={`block w-full aspect-square ${selectable ? "cursor-pointer" : "cursor-default"}`}
-          >
-            {m.kind === "video" ? (
-              <video src={m.url} className="w-full h-full object-cover" muted />
-            ) : (
-              <img
-                src={m.url}
-                alt={m.alt_text ?? m.file_name}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            )}
-          </button>
-          <div className="absolute inset-x-0 bottom-0 bg-ink/60 px-2 py-1 flex items-center justify-between gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <span className="text-[9px] text-cream/90 truncate">{m.file_name}</span>
-            <div className="flex gap-2 shrink-0">
-              <button
-                type="button"
-                onClick={() => navigator.clipboard.writeText(m.url)}
-                className="text-[9px] uppercase tracking-[0.15em] text-cream/90 hover:text-gold"
-              >
-                Copy
-              </button>
-              {onDelete && (
-                <button
-                  type="button"
-                  onClick={() => onDelete(m)}
-                  className="text-[9px] uppercase tracking-[0.15em] text-cream/90 hover:text-destructive"
-                >
-                  Delete
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
+          item={m}
+          onSelect={onSelect}
+          selectable={selectable}
+          onDelete={onDelete}
+        />
       ))}
     </div>
   );
@@ -190,7 +249,7 @@ export function MediaLibrary({ userId }: { userId: string }) {
         <p className="text-xs text-ink/60">
           {loading ? "Loading…" : `${items.length} file${items.length === 1 ? "" : "s"}`}
         </p>
-        <UploadButton userId={userId} onUploaded={reload} />
+        <UploadButton userId={userId} onUploaded={() => reload()} />
       </div>
       <MediaGrid items={items} onDelete={del} />
     </div>
