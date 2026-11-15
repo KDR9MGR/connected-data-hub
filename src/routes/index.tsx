@@ -8,23 +8,24 @@ import { useState, useEffect } from "react";
 import { Play } from "lucide-react";
 import { MediaDisplay } from "@/components/MediaDisplay";
 import { parseYoutubeId, isVideoFile } from "@/lib/youtube";
+import { absoluteUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Swāstha — Clinical Ayurveda for the Modern Soul" },
+      { title: "Swastha — Clinical Ayurveda for the Modern Soul" },
       {
         name: "description",
         content:
           "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
       },
-      { property: "og:title", content: "Swāstha — Clinical Ayurveda" },
+      { property: "og:title", content: "Swastha — Clinical Ayurveda" },
       {
         property: "og:description",
         content:
           "Holistic disease prevention, treatment and diet & lifestyle care, delivered with discretion.",
       },
-      { property: "og:image", content: "/og-image.png" },
+      { property: "og:image", content: absoluteUrl("/og-image.png") },
     ],
   }),
   component: Home,
@@ -109,7 +110,7 @@ function Hero() {
                 <img
                   key={s}
                   src={s}
-                  alt="Swāstha clinic"
+                  alt="Swastha clinic"
                   loading={i === 0 ? "eager" : "lazy"}
                   className={
                     "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 " +

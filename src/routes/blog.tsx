@@ -6,13 +6,13 @@ import { usePageSection } from "@/lib/usePageContent";
 export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
-      { title: "Journal — Swāstha" },
+      { title: "Journal — Swastha" },
       {
         name: "description",
         content:
-          "Clinical notes, case studies and essays on Ayurvedic medicine, prevention and lifestyle from the Swāstha team.",
+          "Clinical notes, case studies and essays on Ayurvedic medicine, prevention and lifestyle from the Swastha team.",
       },
-      { property: "og:title", content: "Journal — Swāstha" },
+      { property: "og:title", content: "Journal — Swastha" },
       {
         property: "og:description",
         content: "Essays and clinical case studies from our Ayurvedic team.",

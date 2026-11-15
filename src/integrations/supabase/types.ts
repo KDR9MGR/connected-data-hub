@@ -230,6 +230,137 @@ export type Database = {
         };
         Relationships: [];
       };
+      product_orders: {
+        Row: {
+          address: string;
+          channel: string;
+          city: string;
+          created_at: string;
+          customer_name: string;
+          email: string | null;
+          id: string;
+          notes: string | null;
+          order_ref: string;
+          phone: string;
+          pincode: string;
+          product_id: string | null;
+          product_name: string;
+          quantity: number;
+          state: string;
+          status: string;
+          total: number;
+          unit_price: number;
+          updated_at: string;
+        };
+        Insert: {
+          address: string;
+          channel: string;
+          city: string;
+          created_at?: string;
+          customer_name: string;
+          email?: string | null;
+          id?: string;
+          notes?: string | null;
+          order_ref?: string;
+          phone: string;
+          pincode: string;
+          product_id?: string | null;
+          product_name?: string;
+          quantity: number;
+          state: string;
+          status?: string;
+          total?: number;
+          unit_price?: number;
+          updated_at?: string;
+        };
+        Update: {
+          address?: string;
+          channel?: string;
+          city?: string;
+          created_at?: string;
+          customer_name?: string;
+          email?: string | null;
+          id?: string;
+          notes?: string | null;
+          order_ref?: string;
+          phone?: string;
+          pincode?: string;
+          product_id?: string | null;
+          product_name?: string;
+          quantity?: number;
+          state?: string;
+          status?: string;
+          total?: number;
+          unit_price?: number;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "product_orders_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      products: {
+        Row: {
+          category: string | null;
+          compare_at_price: number | null;
+          created_at: string;
+          description: string | null;
+          id: string;
+          images: string[];
+          in_stock: boolean;
+          is_featured: boolean;
+          is_published: boolean;
+          name: string;
+          price: number;
+          short_description: string | null;
+          size_label: string | null;
+          slug: string;
+          sort_order: number;
+          updated_at: string;
+        };
+        Insert: {
+          category?: string | null;
+          compare_at_price?: number | null;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          images?: string[];
+          in_stock?: boolean;
+          is_featured?: boolean;
+          is_published?: boolean;
+          name: string;
+          price: number;
+          short_description?: string | null;
+          size_label?: string | null;
+          slug: string;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Update: {
+          category?: string | null;
+          compare_at_price?: number | null;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          images?: string[];
+          in_stock?: boolean;
+          is_featured?: boolean;
+          is_published?: boolean;
+          name?: string;
+          price?: number;
+          short_description?: string | null;
+          size_label?: string | null;
+          slug?: string;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;

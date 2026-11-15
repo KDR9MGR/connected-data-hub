@@ -8,6 +8,7 @@ const links = [
   { to: "/disease-prevention", label: "Prevention" },
   { to: "/treatment", label: "Treatment" },
   { to: "/diet-lifestyle", label: "Lifestyle" },
+  { to: "/shop", label: "Shop" },
   { to: "/blog", label: "Blog" },
 ] as const;
 
@@ -16,17 +17,17 @@ export function SiteNav() {
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50 bg-cream/80 backdrop-blur-md border-b border-sage/10">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-4">
         <Link
           to="/"
-          aria-label="Swāstha — home"
-          className="flex items-center gap-2.5 text-xl md:text-2xl font-serif font-semibold tracking-tight text-sage"
+          aria-label="Swastha — home"
+          className="flex shrink-0 items-center gap-3 text-2xl lg:text-3xl font-serif font-semibold tracking-tight text-sage"
         >
-          <BrandLogo variant="icon" decorative className="size-10 md:size-11 object-contain" />
-          Swāstha
+          <BrandLogo variant="icon" decorative className="size-12 md:size-14 object-contain" />
+          Swastha
         </Link>
 
-        <div className="hidden md:flex gap-10 text-xs font-medium uppercase tracking-[0.18em]">
+        <div className="hidden md:flex gap-5 lg:gap-8 xl:gap-10 text-xs font-medium uppercase tracking-[0.18em]">
           {links.map((l) => (
             <Link
               key={l.to}

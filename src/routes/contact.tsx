@@ -5,13 +5,13 @@ import { ConsultEmail, useContactEmail } from "@/components/ConsultEmail";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Swāstha" },
+      { title: "Contact — Swastha" },
       {
         name: "description",
         content:
           "Book a confidential Ayurvedic consultation. Submit the contact form or email our clinic team.",
       },
-      { property: "og:title", content: "Contact — Swāstha" },
+      { property: "og:title", content: "Contact — Swastha" },
       { property: "og:description", content: "Confidential consultations, English-speaking team." },
     ],
   }),
