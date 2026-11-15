@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Araya Veda — Serene botanical luxe design system.
+ * Swāstha — Serene botanical luxe design system.
  * Sage clinical greens, warm cream, hand-paper stone, soft gold accent.
  * Fonts are loaded via <link> in src/routes/__root.tsx (Lightning CSS cannot @import URLs).
  */

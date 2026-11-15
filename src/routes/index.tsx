@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ContactForm } from "@/components/ContactForm";
-import { ConsultWhatsapp, useWaUrl } from "@/components/ConsultWhatsapp";
+import { ConsultEmail, useContactEmail } from "@/components/ConsultEmail";
 import { usePageSection } from "@/lib/usePageContent";
 import { useState, useEffect } from "react";
 import { Play } from "lucide-react";
@@ -12,23 +12,19 @@ import { parseYoutubeId, isVideoFile } from "@/lib/youtube";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Araya Veda — Clinical Ayurveda for the Modern Soul" },
+      { title: "Swāstha — Clinical Ayurveda for the Modern Soul" },
       {
         name: "description",
         content:
           "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
       },
-      { property: "og:title", content: "Araya Veda — Clinical Ayurveda" },
+      { property: "og:title", content: "Swāstha — Clinical Ayurveda" },
       {
         property: "og:description",
         content:
           "Holistic disease prevention, treatment and diet & lifestyle care, delivered with discretion.",
       },
-      {
-        property: "og:image",
-        content:
-          "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=ayurveda%20wellness%20clinic%20hero%20banner%2C%20warm%20earth%20tones%2C%20herbs%2C%20zen%20stones%2C%20lotus%20flower%2C%20gold%20accents%2C%20professional%20healthcare&image_size=landscape_16_9",
-      },
+      { property: "og:image", content: "/og-image.png" },
     ],
   }),
   component: Home,
@@ -103,7 +99,7 @@ function Hero() {
             >
               {hero.cta_label} ↗
             </Link>
-            <ConsultWhatsapp />
+            <ConsultEmail />
           </div>
         </div>
         {slides.length > 0 && (
@@ -375,7 +371,6 @@ function WhyUs() {
 
 function Testimonials() {
   const { content } = usePageSection("home", "testimonials");
-  const waUrl = useWaUrl();
   const { data: items } = useQuery({
     queryKey: ["testimonials_published"],
     queryFn: async () => {
@@ -409,10 +404,8 @@ function Testimonials() {
                     className="w-full rounded-2xl overflow-hidden"
                   />
                 ) : t.media_type === "video" ? (
-                  <a
-                    href={waUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    to="/contact"
                     className="relative block rounded-2xl overflow-hidden aspect-video group"
                   >
                     <img
@@ -427,7 +420,7 @@ function Testimonials() {
                         <Play size={20} className="text-sage ml-0.5" />
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 ) : (
                   <img
                     src={t.media_url}
@@ -451,7 +444,7 @@ function Testimonials() {
 
 function Contact() {
   const { content } = usePageSection("home", "contact");
-  const { content: globalContact } = usePageSection("global", "contact");
+  const email = useContactEmail();
 
   return (
     <section id="contact" className="py-20 md:py-24 px-6">
@@ -466,10 +459,9 @@ function Contact() {
           </h2>
           <p className="text-ink/65 mb-10 max-w-md leading-relaxed">{content.body}</p>
           <div className="space-y-5 mb-10">
-            <ContactRow label="Email" value={globalContact.email} />
-            <ContactRow label="WhatsApp" value={globalContact.phone_display} />
+            <ContactRow label="Email" value={email} />
           </div>
-          <ConsultWhatsapp variant="tile" />
+          <ConsultEmail variant="tile" />
         </div>
         <ContactForm />
       </div>

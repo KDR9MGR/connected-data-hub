@@ -120,14 +120,7 @@ export const PAGE_CONTENT_SCHEMA: Record<string, PageSchema> = {
     contact: {
       label: "Contact details",
       fields: [
-        { type: "text", key: "email", label: "Email" },
-        {
-          type: "text",
-          key: "whatsapp_number",
-          label: "WhatsApp number (digits only, e.g. 442079460123)",
-        },
-        { type: "textarea", key: "whatsapp_message", label: "WhatsApp prefill message" },
-        { type: "text", key: "phone_display", label: "Phone (displayed)" },
+        { type: "text", key: "email", label: "Email (shown on the site)" },
       ],
     },
     concerns: {
@@ -227,7 +220,7 @@ export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, Record<string,
       kicker: "Contact",
       heading_line1: "Start Your",
       heading_highlight: "Healing Journey",
-      body: "Fill out the form for a confidential assessment, or message us on WhatsApp for an immediate consultation.",
+      body: "Fill out the form for a confidential assessment, or email us directly and our team will get back to you.",
     },
   },
   treatment: {
@@ -281,10 +274,7 @@ export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, Record<string,
       ],
     },
     contact: {
-      email: "concierge@arayaveda.com",
-      whatsapp_number: "442079460123",
-      whatsapp_message: "Hello Araya Veda, I'd like to book a consultation.",
-      phone_display: "+44 20 7946 0123",
+      email: "info@swastha.org.in",
     },
     footer: {
       tagline:

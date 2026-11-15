@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const links = [
   { to: "/", label: "Home" },
@@ -18,8 +19,10 @@ export function SiteNav() {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link
           to="/"
-          className="text-xl md:text-2xl font-serif font-semibold tracking-tight text-sage"
+          aria-label="Swāstha — home"
+          className="flex items-center gap-2.5 text-xl md:text-2xl font-serif font-semibold tracking-tight text-sage"
         >
+          <BrandLogo variant="icon" decorative className="size-10 md:size-11 object-contain" />
           Swāstha
         </Link>
 

@@ -1,6 +1,9 @@
 # Environment variables
 .env
 
+# Secrets (keys, credentials, certificates)
+secrets/
+
 # Logs
 logs
 *.log
