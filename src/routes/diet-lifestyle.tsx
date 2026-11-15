@@ -7,13 +7,13 @@ import { MediaDisplay } from "@/components/MediaDisplay";
 export const Route = createFileRoute("/diet-lifestyle")({
   head: () => ({
     meta: [
-      { title: "Diet & Lifestyle — Araya Veda" },
+      { title: "Diet & Lifestyle — Swāstha" },
       {
         name: "description",
         content:
           "Constitution-specific Ayurvedic diet plans and daily routines (Dinacharya) designed for real, modern lives.",
       },
-      { property: "og:title", content: "Diet & Lifestyle — Araya Veda" },
+      { property: "og:title", content: "Diet & Lifestyle — Swāstha" },
       {
         property: "og:description",
         content: "Dosha-aligned nutrition and routine for sustainable wellness.",

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageSection } from "@/lib/usePageContent";
+import { notifyContactSubmission } from "@/lib/contact.functions";
+import { useContactEmail } from "@/components/ConsultEmail";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Please enter your name").max(100),
@@ -19,11 +21,13 @@ const empty: FormState = { name: "", phone: "", email: "", subject: "", disease:
 export function ContactForm() {
   const { content: concerns } = usePageSection("global", "concerns");
   const diseases: string[] = concerns.items ?? [];
+  const email = useContactEmail();
   const [data, setData] = useState<FormState>(empty);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
 
   const update =
     (k: keyof FormState) =>
@@ -52,11 +56,29 @@ export function ContactForm() {
       disease: v.disease,
       body: v.body,
     });
-    setSubmitting(false);
     if (error) {
+      setSubmitting(false);
       setSubmitError(error.message);
       return;
     }
+    // The enquiry is safely stored; now forward a copy to the clinic inbox.
+    // A mail failure must never make the visitor think their enquiry was lost.
+    try {
+      await notifyContactSubmission({
+        data: {
+          name: v.name,
+          email: v.email,
+          phone: v.phone,
+          subject: v.subject || "",
+          disease: v.disease,
+          body: v.body,
+          website: honeypot,
+        },
+      });
+    } catch (err) {
+      console.error("[contact] email notification failed", err);
+    }
+    setSubmitting(false);
     setSent(true);
     setData(empty);
   };
@@ -67,8 +89,12 @@ export function ContactForm() {
         <div className="text-[10px] uppercase tracking-[0.22em] text-gold mb-4">Received</div>
         <h3 className="text-3xl font-serif mb-3">Thank you.</h3>
         <p className="text-ink/60 max-w-md mx-auto">
-          A member of our clinical team will reach out within one working day. For urgent matters
-          please message us on WhatsApp.
+          A member of our clinical team will reach out within one working day. You can also write to
+          us any time at{" "}
+          <a href={`mailto:${email}`} className="text-sage underline underline-offset-4">
+            {email}
+          </a>
+          .
         </p>
         <button
           onClick={() => setSent(false)}
@@ -147,6 +173,20 @@ export function ContactForm() {
           placeholder="Briefly describe your symptoms, history and goals…"
         />
       </Field>
+
+      {/* Honeypot — hidden from people, bots tend to fill it in. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        <label>
+          Website
+          <input
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+          />
+        </label>
+      </div>
 
       {submitError && <p className="text-[12px] text-destructive">{submitError}</p>}
       <button

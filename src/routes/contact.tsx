@@ -1,17 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ContactForm } from "@/components/ContactForm";
-import { ConsultWhatsapp } from "@/components/ConsultWhatsapp";
+import { ConsultEmail, useContactEmail } from "@/components/ConsultEmail";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Araya Veda" },
+      { title: "Contact — Swāstha" },
       {
         name: "description",
         content:
-          "Book a confidential Ayurvedic consultation. Submit the contact form or reach our clinic on WhatsApp.",
+          "Book a confidential Ayurvedic consultation. Submit the contact form or email our clinic team.",
       },
-      { property: "og:title", content: "Contact — Araya Veda" },
+      { property: "og:title", content: "Contact — Swāstha" },
       { property: "og:description", content: "Confidential consultations, English-speaking team." },
     ],
   }),
@@ -19,6 +19,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Page() {
+  const email = useContactEmail();
   return (
     <article className="pt-32 md:pt-40 pb-24 px-6">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 md:gap-24">
@@ -31,17 +32,16 @@ function Page() {
             <span className="italic">consultation.</span>
           </h1>
           <p className="text-ink/65 mb-10 max-w-md leading-relaxed">
-            Share a few details and our clinical team will respond within one working day. For
-            urgent matters, message us on WhatsApp.
+            Share a few details and our clinical team will respond within one working day. You can
+            also write to us directly by email.
           </p>
 
           <div className="space-y-5 mb-10">
-            <Row label="Email" value="concierge@arayaveda.com" />
-            <Row label="WhatsApp" value="+44 20 7946 0123" />
+            <Row label="Email" value={email} />
             <Row label="Hours" value="Mon–Sat · 9.00–18.00 IST" />
           </div>
 
-          <ConsultWhatsapp variant="tile" />
+          <ConsultEmail variant="tile" />
         </div>
         <ContactForm />
       </div>
