@@ -4,7 +4,7 @@ export const CONTACT_EMAIL = "info@swastha.org.in";
 
 function buildMailto(email: string) {
   const subject = encodeURIComponent("Consultation enquiry");
-  const body = encodeURIComponent("Hello Swāstha, I'd like to book a consultation.");
+  const body = encodeURIComponent("Hello Swastha, I'd like to book a consultation.");
   return `mailto:${email}?subject=${subject}&body=${body}`;
 }
 

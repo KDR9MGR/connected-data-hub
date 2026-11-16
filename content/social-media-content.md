@@ -1,4 +1,4 @@
-# Swāstha — Social media starter pack
+# Swastha — Social media starter pack
 
 Ready-to-post copy for Instagram, Facebook, LinkedIn and X. Everything here is written from what the
 website already says (modern Ayurveda clinic · prevention, treatment, diet & lifestyle · BAMS-qualified
@@ -24,10 +24,10 @@ names before posting.
 > info@swastha.org.in
 
 **LinkedIn tagline**
-> Swāstha — personalised Ayurvedic prevention, treatment and lifestyle care, led by qualified physicians.
+> Swastha — personalised Ayurvedic prevention, treatment and lifestyle care, led by qualified physicians.
 
 **Facebook "About" (short)**
-> Swāstha is a modern Ayurveda clinic for people who want real, personalised care. We combine
+> Swastha is a modern Ayurveda clinic for people who want real, personalised care. We combine
 > classical Ayurvedic medicine with clear, practical guidance — so your plan fits your actual life.
 > Write to us at info@swastha.org.in.
 
@@ -35,8 +35,8 @@ names before posting.
 
 ## 3. Launch posts (first week)
 
-**Post 1 — Hello, Swāstha** *(logo reveal, square image)*
-> Meet Swāstha 🍎🌿
+**Post 1 — Hello, Swastha** *(logo reveal, square image)*
+> Meet Swastha 🍎🌿
 > "Swastha" means being established in yourself — healthy in body, mind and routine.
 > We're a modern Ayurveda clinic offering prevention, treatment and lifestyle care, personalised to you.
 > Follow along as we share simple, practical Ayurveda.
@@ -64,7 +64,7 @@ names before posting.
 
 **Post 5 — Confidential by design** *(text on cream background)*
 > Your health story is yours.
-> Every consultation at Swāstha is handled with strict confidentiality.
+> Every consultation at Swastha is handled with strict confidentiality.
 > #PatientPrivacy #Ayurveda #Swastha
 
 ## 4. Educational posts (repeatable formats)

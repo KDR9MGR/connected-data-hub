@@ -2,7 +2,7 @@ import logoFull from "@/assets/brand/swastha-logo.png";
 import logoIcon from "@/assets/brand/swastha-icon.png";
 
 /**
- * Swāstha brand marks.
+ * Swastha brand marks.
  *  - "icon": pomegranate mark only (tight spaces: navbar, mobile, avatars)
  *  - "full": pomegranate + SWASTHA wordmark (footer, hero, anywhere the brand stands alone)
  */
@@ -20,7 +20,7 @@ export function BrandLogo({
   return (
     <img
       src={isIcon ? logoIcon : logoFull}
-      alt={decorative ? "" : isIcon ? "Swāstha" : "Swāstha — Ayurveda clinic"}
+      alt={decorative ? "" : isIcon ? "Swastha" : "Swastha — Ayurveda clinic"}
       width={isIcon ? 512 : 900}
       height={isIcon ? 512 : 681}
       decoding="async"

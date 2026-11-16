@@ -44,6 +44,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/shop" className="hover:text-gold">
+                Shop
+              </Link>
+            </li>
+            <li>
               <Link to="/blog" className="hover:text-gold">
                 Blog
               </Link>
@@ -69,7 +74,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-sage/10">
         <div className="max-w-7xl mx-auto px-6 py-6 text-[10px] uppercase tracking-[0.3em] text-sage/40 text-center">
-          © {new Date().getFullYear()} Swāstha · {footer.copyright_tagline}
+          © {new Date().getFullYear()} Swastha · {footer.copyright_tagline}
         </div>
       </div>
     </footer>

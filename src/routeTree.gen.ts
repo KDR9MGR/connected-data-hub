@@ -16,9 +16,12 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DietLifestyleRouteImport } from './routes/diet-lifestyle'
 import { Route as DiseasePreventionRouteImport } from './routes/disease-prevention'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TreatmentRouteImport } from './routes/treatment'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as ShopIndexRouteImport } from './routes/shop.index'
+import { Route as ShopSlugRouteImport } from './routes/shop.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -55,6 +58,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -70,6 +78,16 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BlogRoute,
 } as any)
+const ShopIndexRoute = ShopIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ShopRoute,
+} as any)
+const ShopSlugRoute = ShopSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ShopRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -79,9 +97,12 @@ export interface FileRoutesByFullPath {
   '/diet-lifestyle': typeof DietLifestyleRoute
   '/disease-prevention': typeof DiseasePreventionRoute
   '/login': typeof LoginRoute
+  '/shop': typeof ShopRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/treatment': typeof TreatmentRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/shop/$slug': typeof ShopSlugRoute
+  '/shop/': typeof ShopIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +115,8 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/treatment': typeof TreatmentRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/shop/$slug': typeof ShopSlugRoute
+  '/shop': typeof ShopIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -104,9 +127,12 @@ export interface FileRoutesById {
   '/diet-lifestyle': typeof DietLifestyleRoute
   '/disease-prevention': typeof DiseasePreventionRoute
   '/login': typeof LoginRoute
+  '/shop': typeof ShopRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/treatment': typeof TreatmentRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/shop/$slug': typeof ShopSlugRoute
+  '/shop/': typeof ShopIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -118,9 +144,12 @@ export interface FileRouteTypes {
     | '/diet-lifestyle'
     | '/disease-prevention'
     | '/login'
+    | '/shop'
     | '/sitemap.xml'
     | '/treatment'
     | '/blog/$slug'
+    | '/shop/$slug'
+    | '/shop/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +162,8 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/treatment'
     | '/blog/$slug'
+    | '/shop/$slug'
+    | '/shop'
   id:
     | '__root__'
     | '/'
@@ -142,9 +173,12 @@ export interface FileRouteTypes {
     | '/diet-lifestyle'
     | '/disease-prevention'
     | '/login'
+    | '/shop'
     | '/sitemap.xml'
     | '/treatment'
     | '/blog/$slug'
+    | '/shop/$slug'
+    | '/shop/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -155,6 +189,7 @@ export interface RootRouteChildren {
   DietLifestyleRoute: typeof DietLifestyleRoute
   DiseasePreventionRoute: typeof DiseasePreventionRoute
   LoginRoute: typeof LoginRoute
+  ShopRoute: typeof ShopRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TreatmentRoute: typeof TreatmentRoute
 }
@@ -210,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -231,6 +273,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
     }
+    '/shop/': {
+      id: '/shop/'
+      path: '/'
+      fullPath: '/shop/'
+      preLoaderRoute: typeof ShopIndexRouteImport
+      parentRoute: typeof ShopRoute
+    }
+    '/shop/$slug': {
+      id: '/shop/$slug'
+      path: '/$slug'
+      fullPath: '/shop/$slug'
+      preLoaderRoute: typeof ShopSlugRouteImport
+      parentRoute: typeof ShopRoute
+    }
   }
 }
 
@@ -244,6 +300,18 @@ const BlogRouteChildren: BlogRouteChildren = {
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
+interface ShopRouteChildren {
+  ShopSlugRoute: typeof ShopSlugRoute
+  ShopIndexRoute: typeof ShopIndexRoute
+}
+
+const ShopRouteChildren: ShopRouteChildren = {
+  ShopSlugRoute: ShopSlugRoute,
+  ShopIndexRoute: ShopIndexRoute,
+}
+
+const ShopRouteWithChildren = ShopRoute._addFileChildren(ShopRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
@@ -252,6 +320,7 @@ const rootRouteChildren: RootRouteChildren = {
   DietLifestyleRoute: DietLifestyleRoute,
   DiseasePreventionRoute: DiseasePreventionRoute,
   LoginRoute: LoginRoute,
+  ShopRoute: ShopRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TreatmentRoute: TreatmentRoute,
 }

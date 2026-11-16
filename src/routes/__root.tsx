@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ThemeStyle } from "@/components/ThemeStyle";
+import { absoluteUrl } from "@/lib/site";
 
 function NotFoundComponent() {
   return (
@@ -76,32 +77,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Swāstha — Clinical Ayurveda for the Modern Soul" },
+      { title: "Swastha — Clinical Ayurveda for the Modern Soul" },
       {
         name: "description",
         content:
           "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
       },
-      { name: "author", content: "Swāstha" },
-      { property: "og:title", content: "Swāstha — Clinical Ayurveda for the Modern Soul" },
+      { name: "author", content: "Swastha" },
+      { property: "og:title", content: "Swastha — Clinical Ayurveda for the Modern Soul" },
       {
         property: "og:description",
         content:
           "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "Swāstha" },
+      { property: "og:site_name", content: "Swastha" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Swāstha — Clinical Ayurveda for the Modern Soul" },
+      { name: "twitter:title", content: "Swastha — Clinical Ayurveda for the Modern Soul" },
       {
         name: "twitter:description",
         content:
           "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
       },
-      { property: "og:image", content: "/og-image.png" },
+      { property: "og:image", content: absoluteUrl("/og-image.png") },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { name: "twitter:image", content: "/og-image.png" },
+      { name: "twitter:image", content: absoluteUrl("/og-image.png") },
     ],
     links: [
       {

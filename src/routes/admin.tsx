@@ -11,6 +11,8 @@ import { MediaLibrary } from "@/components/admin/MediaLibrary";
 import { PageContentAdmin } from "@/components/admin/PageContentAdmin";
 import { TreatmentItemsAdmin } from "@/components/admin/TreatmentItemsAdmin";
 import { ThemeAdmin } from "@/components/admin/ThemeAdmin";
+import { ProductsAdmin } from "@/components/admin/ProductsAdmin";
+import { OrdersAdmin } from "@/components/admin/OrdersAdmin";
 import { Dashboard } from "@/components/admin/Dashboard";
 import { PAGE_LABELS } from "@/lib/pageContentSchema";
 
@@ -19,7 +21,11 @@ export const Route = createFileRoute("/admin")({ component: AdminPage });
 type Destination =
   | { group: "dashboard" }
   | { group: "pages"; page: string }
-  | { group: "collections"; id: "blog" | "testimonials" | "portfolio" | "pricing" | "treatments" }
+  | {
+      group: "collections";
+      id: "blog" | "testimonials" | "portfolio" | "pricing" | "treatments" | "products";
+    }
+  | { group: "orders" }
   | { group: "media" }
   | { group: "theme" }
   | { group: "settings" }
@@ -75,6 +81,7 @@ function AdminPage() {
     "treatment",
     "diet-lifestyle",
     "disease-prevention",
+    "shop",
     "blog",
   ].map((page) => ({ group: "pages", page }));
   const collectionDests: {
@@ -150,6 +157,12 @@ function AdminPage() {
                   <NavItem key={c.id} dest={{ group: "collections", id: c.id }} label={c.label} />
                 ))}
             </NavGroup>
+            {isEditor && (
+              <NavGroup title="Shop">
+                <NavItem dest={{ group: "collections", id: "products" }} label="Products" />
+                <NavItem dest={{ group: "orders" }} label="Orders" />
+              </NavGroup>
+            )}
             {(isEditor || isBlogger) && (
               <NavGroup title="Library">
                 <NavItem dest={{ group: "media" }} label="Media" />
@@ -184,6 +197,10 @@ function AdminPage() {
             {active.group === "collections" && active.id === "pricing" && isEditor && (
               <PricingAdmin />
             )}
+            {active.group === "collections" && active.id === "products" && isEditor && (
+              <ProductsAdmin userId={user.id} />
+            )}
+            {active.group === "orders" && isEditor && <OrdersAdmin />}
             {active.group === "media" && (isEditor || isBlogger) && (
               <MediaLibrary userId={user.id} />
             )}

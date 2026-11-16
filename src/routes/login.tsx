@@ -42,7 +42,7 @@ function LoginPage() {
   return (
     <section className="pt-32 pb-24 px-6 min-h-screen">
       <div className="max-w-md mx-auto">
-        <div className="text-[10px] uppercase tracking-[0.3em] text-gold mb-4">Swāstha CMS</div>
+        <div className="text-[10px] uppercase tracking-[0.3em] text-gold mb-4">Swastha CMS</div>
         <h1 className="text-4xl font-serif mb-3">Welcome back</h1>
         <p className="text-ink/60 text-sm mb-10">Sign in to manage content.</p>
 

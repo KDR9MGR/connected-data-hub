@@ -116,11 +116,38 @@ export const PAGE_CONTENT_SCHEMA: Record<string, PageSchema> = {
       ],
     },
   },
+  shop: {
+    hero: {
+      label: "Hero",
+      fields: [
+        { type: "text", key: "kicker", label: "Kicker" },
+        { type: "text", key: "heading_line1", label: "Heading line 1" },
+        { type: "text", key: "heading_highlight", label: "Heading highlight (italic)" },
+        { type: "textarea", key: "body", label: "Body text" },
+      ],
+    },
+  },
   global: {
     contact: {
       label: "Contact details",
       fields: [
         { type: "text", key: "email", label: "Email (shown on the site)" },
+      ],
+    },
+    shop: {
+      label: "Shop & orders",
+      fields: [
+        {
+          type: "text",
+          key: "whatsapp_number",
+          label: "WhatsApp number that receives orders (with country code, digits only)",
+          placeholder: "919082289198",
+        },
+        {
+          type: "textarea",
+          key: "order_note",
+          label: "Note shown on the order form",
+        },
       ],
     },
     concerns: {
@@ -146,6 +173,7 @@ export const PAGE_LABELS: Record<string, string> = {
   "diet-lifestyle": "Diet & Lifestyle",
   "disease-prevention": "Disease Prevention",
   blog: "Blog",
+  shop: "Shop",
   global: "Site Settings",
 };
 
@@ -160,7 +188,7 @@ export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, Record<string,
       heading_highlight: "health",
       heading_line2: "with us.",
       subtext:
-        "Swāstha is a modern Ayurveda clinic for a generation that wants real care — minus the gimmicks. Prevention, treatment & lifestyle, personalised to you.",
+        "Swastha is a modern Ayurveda clinic for a generation that wants real care — minus the gimmicks. Prevention, treatment & lifestyle, personalised to you.",
       cta_label: "Explore care",
       slideshow_images: [] as string[],
     },
@@ -256,7 +284,22 @@ export const PAGE_CONTENT_DEFAULTS: Record<string, Record<string, Record<string,
   blog: {
     hero: { kicker: "Journal", heading_line1: "Notes from the", heading_highlight: "clinic." },
   },
+  shop: {
+    hero: {
+      kicker: "Shop",
+      heading_line1: "Ayurvedic care,",
+      heading_highlight: "delivered.",
+      body: "Products chosen and used by our clinical team. Order in a minute — we confirm availability and delivery with you directly on WhatsApp or email.",
+    },
+  },
   global: {
+    shop: {
+      // Orders open a WhatsApp chat with this number. It is used only inside the "Order on WhatsApp"
+      // link and is never printed on the page.
+      whatsapp_number: "919082289198",
+      order_note:
+        "We will confirm availability, delivery charges and payment details with you on WhatsApp or email before dispatch.",
+    },
     theme: {
       accent_color: "#4a6355",
       background_color: "#fafaf6",

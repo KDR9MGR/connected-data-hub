@@ -7,13 +7,13 @@ import { MediaDisplay } from "@/components/MediaDisplay";
 export const Route = createFileRoute("/treatment")({
   head: () => ({
     meta: [
-      { title: "Treatment — Swāstha" },
+      { title: "Treatment — Swastha" },
       {
         name: "description",
         content:
           "Authentic Ayurvedic treatments: Panchakarma, Rasayana rejuvenation and protocols for chronic and autoimmune conditions.",
       },
-      { property: "og:title", content: "Treatment — Swāstha" },
+      { property: "og:title", content: "Treatment — Swastha" },
       { property: "og:description", content: "Indexed clinical treatments for serious recovery." },
     ],
   }),

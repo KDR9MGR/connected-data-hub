@@ -7,13 +7,13 @@ import { MediaDisplay } from "@/components/MediaDisplay";
 export const Route = createFileRoute("/disease-prevention")({
   head: () => ({
     meta: [
-      { title: "Disease Prevention — Swāstha" },
+      { title: "Disease Prevention — Swastha" },
       {
         name: "description",
         content:
           "Proactive Ayurvedic prevention: immunity, metabolic alignment and seasonal protocols designed to stop disease before it starts.",
       },
-      { property: "og:title", content: "Disease Prevention — Swāstha" },
+      { property: "og:title", content: "Disease Prevention — Swastha" },
       {
         property: "og:description",
         content: "Ayurvedic prevention programmes tailored to your constitution and environment.",
