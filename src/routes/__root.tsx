@@ -81,14 +81,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
+          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 5+ years of clinical practice.",
       },
       { name: "author", content: "Swastha" },
       { property: "og:title", content: "Swastha — Clinical Ayurveda for the Modern Soul" },
       {
         property: "og:description",
         content:
-          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
+          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 5+ years of clinical practice.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Swastha" },
@@ -97,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "twitter:description",
         content:
-          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
+          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 5+ years of clinical practice.",
       },
       { property: "og:image", content: absoluteUrl("/og-image.png") },
       { property: "og:image:width", content: "1200" },

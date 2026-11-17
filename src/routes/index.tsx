@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 15+ years of clinical practice.",
+          "Personalised Ayurvedic prevention, treatment and lifestyle protocols. NDA-protected English-speaking team, 5+ years of clinical practice.",
       },
       { property: "og:title", content: "Swastha — Clinical Ayurveda" },
       {
