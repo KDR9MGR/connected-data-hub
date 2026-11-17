@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { CopyButton, EmailStatus } from "@/components/admin/ContactBits";
 
 type S = {
   id: string;
@@ -11,6 +12,8 @@ type S = {
   body: string;
   is_read: boolean;
   created_at: string;
+  notified_at: string | null;
+  notify_error: string | null;
 };
 
 export function SubmissionsAdmin() {
@@ -48,10 +51,13 @@ export function SubmissionsAdmin() {
           <div className="flex flex-wrap justify-between gap-3">
             <div className="min-w-0 flex-1">
               <div className="text-[10px] uppercase tracking-[0.2em] text-ink/50 mb-1">
-                {new Date(s.created_at).toLocaleString()} · {s.disease || "—"}
+                {new Date(s.created_at).toLocaleString()} · {s.disease || "—"} ·{" "}
+                <EmailStatus sentAt={s.notified_at} error={s.notify_error} />
               </div>
-              <div className="font-serif">
-                {s.name} <span className="text-ink/50 text-sm">· {s.email}</span>
+              <div className="font-serif flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span>{s.name}</span>
+                <span className="text-ink/50 text-sm break-all">· {s.email}</span>
+                <CopyButton value={s.email} label="email" />
               </div>
               {s.subject && <div className="text-sm text-ink/60">{s.subject}</div>}
             </div>
@@ -79,11 +85,10 @@ export function SubmissionsAdmin() {
           {openId === s.id && (
             <div className="mt-4 pt-4 border-t border-sage/10 text-sm space-y-2 text-ink/80">
               {s.phone && (
-                <div>
-                  <span className="text-ink/50 uppercase text-[10px] tracking-[0.2em]">
-                    Phone:{" "}
-                  </span>
-                  {s.phone}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-ink/50 uppercase text-[10px] tracking-[0.2em]">Phone:</span>
+                  <span>{s.phone}</span>
+                  <CopyButton value={s.phone} label="phone number" />
                 </div>
               )}
               <p className="whitespace-pre-wrap">{s.body}</p>

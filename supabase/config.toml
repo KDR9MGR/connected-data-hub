@@ -1,1 +1,4 @@
 project_id = "httpnqqiqcghjrmumnwi"
+
+[functions.notify-inbox]
+verify_jwt = false

@@ -3,8 +3,6 @@ import { Mail, MessageCircle, Minus, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageSection } from "@/lib/usePageContent";
 import { PAGE_CONTENT_DEFAULTS } from "@/lib/pageContentSchema";
-import { notifyOrderByEmail } from "@/lib/shop.functions";
-import { useContactEmail } from "@/components/ConsultEmail";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +14,6 @@ import { ProductImage } from "@/components/shop/ProductImage";
 import {
   buildOrderMessage,
   formatPrice,
-  mailtoLink,
   makeOrderRef,
   normalizeWhatsappNumber,
   orderFormSchema,
@@ -27,9 +24,7 @@ import {
 
 type Channel = "whatsapp" | "email";
 
-type Result =
-  | { kind: "whatsapp"; ref: string; link: string }
-  | { kind: "email"; ref: string; delivered: boolean; mailto: string };
+type Result = { kind: "whatsapp"; ref: string; link: string } | { kind: "email"; ref: string };
 
 const emptyForm: OrderForm = {
   name: "",
@@ -55,7 +50,6 @@ export function OrderDialog({
   onOpenChange: (open: boolean) => void;
 }) {
   const { content: shop } = usePageSection("global", "shop");
-  const inbox = useContactEmail();
   const [form, setForm] = useState<OrderForm>(emptyForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState<Channel | null>(null);
@@ -106,13 +100,14 @@ export function OrderDialog({
 
     // Bots fill the hidden field: pretend it worked, store and send nothing.
     if (honeypot) {
-      setResult({ kind: "email", ref, delivered: true, mailto: "" });
+      setResult({ kind: "email", ref });
       return;
     }
 
     setSubmitting(channel);
 
-    // 1) Save the order. The database re-checks the product, price and stock.
+    // 1) Save the order. The database re-checks the product, price and stock, and then e-mails the
+    //    order to the clinic inbox on its own (see supabase/functions/notify-inbox).
     const { error } = await supabase.from("product_orders").insert({
       order_ref: ref,
       product_id: product.id,
@@ -133,7 +128,7 @@ export function OrderDialog({
       return;
     }
 
-    // 2) Hand the order to the clinic through the chosen channel.
+    // 2) WhatsApp orders also open a chat with the order text filled in.
     if (channel === "whatsapp") {
       // A blank value saved from the admin panel must not produce a broken wa.me link.
       const number = normalizeWhatsappNumber(shop.whatsapp_number)
@@ -143,28 +138,7 @@ export function OrderDialog({
       window.open(link, "_blank", "noopener,noreferrer");
       setResult({ kind: "whatsapp", ref, link });
     } else {
-      let delivered = false;
-      try {
-        const res = await notifyOrderByEmail({
-          data: {
-            ref,
-            message,
-            productName: product.name,
-            customerName: v.name,
-            customerEmail: v.email,
-            website: honeypot,
-          },
-        });
-        delivered = res.delivered;
-      } catch (err) {
-        console.error("[order] email notification failed", err);
-      }
-      setResult({
-        kind: "email",
-        ref,
-        delivered,
-        mailto: mailtoLink(inbox, `New order ${ref} — ${product.name}`, message),
-      });
+      setResult({ kind: "email", ref });
     }
     setSubmitting(null);
     setForm(emptyForm);
@@ -378,29 +352,18 @@ function SuccessView({ result, onClose }: { result: Result; onClose: () => void 
       <DialogHeader className="space-y-2 text-center sm:text-center">
         <div className="text-[10px] uppercase tracking-[0.3em] text-gold">Order {result.ref}</div>
         <DialogTitle className="text-3xl font-serif font-light">
-          {result.kind === "whatsapp"
-            ? "One last step"
-            : result.delivered
-              ? "Order received"
-              : "Almost there"}
+          {result.kind === "whatsapp" ? "One last step" : "Order received"}
         </DialogTitle>
         <DialogDescription className="text-ink/60 max-w-sm mx-auto">
           {result.kind === "whatsapp"
             ? "Your order is saved. WhatsApp should have opened with your details filled in — press Send so our team receives it."
-            : result.delivered
-              ? "Thank you. Your order has been sent to our team and we will contact you shortly to confirm."
-              : "Your order is saved. Tap below to email the details to our team so we can confirm it with you."}
+            : "Thank you. Your order has been sent to our team and we will contact you shortly to confirm."}
         </DialogDescription>
       </DialogHeader>
 
       {result.kind === "whatsapp" && (
         <a href={result.link} target="_blank" rel="noopener noreferrer" className={actionClass}>
           <MessageCircle size={16} /> Open WhatsApp
-        </a>
-      )}
-      {result.kind === "email" && !result.delivered && result.mailto && (
-        <a href={result.mailto} className={actionClass}>
-          <Mail size={16} /> Open email
         </a>
       )}
 

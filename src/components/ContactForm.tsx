@@ -2,7 +2,6 @@ import { useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageSection } from "@/lib/usePageContent";
-import { notifyContactSubmission } from "@/lib/contact.functions";
 import { useContactEmail } from "@/components/ConsultEmail";
 
 const schema = z.object({
@@ -18,9 +17,17 @@ type FormState = z.input<typeof schema>;
 
 const empty: FormState = { name: "", phone: "", email: "", subject: "", disease: "", body: "" };
 
+const OTHER = "Other";
+
+/** The admin-editable concern list (Global Settings), always finishing with "Other". */
+function withOther(items: string[]) {
+  const rest = items.filter((d) => d.trim().toLowerCase() !== OTHER.toLowerCase());
+  return [...rest, OTHER];
+}
+
 export function ContactForm() {
   const { content: concerns } = usePageSection("global", "concerns");
-  const diseases: string[] = concerns.items ?? [];
+  const diseases = withOther(concerns.items ?? []);
   const email = useContactEmail();
   const [data, setData] = useState<FormState>(empty);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -46,8 +53,18 @@ export function ContactForm() {
     }
     setErrors({});
     setSubmitError(null);
+
+    // Bots fill the hidden field: pretend it worked, store (and e-mail) nothing.
+    if (honeypot) {
+      setSent(true);
+      setData(empty);
+      return;
+    }
+
     setSubmitting(true);
     const v = result.data;
+    // Saving the enquiry is all the browser has to do: the database then e-mails a copy to the
+    // clinic inbox on its own (see supabase/functions/notify-inbox).
     const { error } = await supabase.from("contact_submissions").insert({
       name: v.name,
       email: v.email,
@@ -60,23 +77,6 @@ export function ContactForm() {
       setSubmitting(false);
       setSubmitError(error.message);
       return;
-    }
-    // The enquiry is safely stored; now forward a copy to the clinic inbox.
-    // A mail failure must never make the visitor think their enquiry was lost.
-    try {
-      await notifyContactSubmission({
-        data: {
-          name: v.name,
-          email: v.email,
-          phone: v.phone,
-          subject: v.subject || "",
-          disease: v.disease,
-          body: v.body,
-          website: honeypot,
-        },
-      });
-    } catch (err) {
-      console.error("[contact] email notification failed", err);
     }
     setSubmitting(false);
     setSent(true);
