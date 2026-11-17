@@ -103,7 +103,3 @@ export function normalizeWhatsappNumber(raw: string | undefined | null) {
 export function whatsappLink(number: string, text: string) {
   return `https://wa.me/${normalizeWhatsappNumber(number)}?text=${encodeURIComponent(text)}`;
 }
-
-export function mailtoLink(to: string, subject: string, body: string) {
-  return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { CopyButton, EmailStatus } from "@/components/admin/ContactBits";
 import {
   ORDER_STATUSES,
   formatPrice,
@@ -79,7 +80,8 @@ export function OrdersAdmin() {
               <div className="flex flex-wrap justify-between gap-4">
                 <div className="min-w-0 flex-1 space-y-1">
                   <div className="text-[10px] uppercase tracking-[0.2em] text-ink/50">
-                    {o.order_ref} · {new Date(o.created_at).toLocaleString()} · via {o.channel}
+                    {o.order_ref} · {new Date(o.created_at).toLocaleString()} · via {o.channel} ·{" "}
+                    <EmailStatus sentAt={o.notified_at} error={o.notify_error} />
                   </div>
                   <div className="font-serif text-lg">
                     {o.product_name} <span className="text-ink/50">× {o.quantity}</span>
@@ -108,19 +110,21 @@ export function OrdersAdmin() {
               <div className="mt-4 pt-4 border-t border-sage/10 grid md:grid-cols-2 gap-4 text-sm text-ink/80">
                 <div className="space-y-1">
                   <div className="font-medium">{o.customer_name}</div>
-                  <div>
+                  <div className="flex flex-wrap items-center gap-2">
                     <a href={`tel:${o.phone}`} className="text-sage underline underline-offset-4">
                       {o.phone}
                     </a>
+                    <CopyButton value={o.phone} label="phone number" />
                   </div>
                   {o.email && (
-                    <div>
+                    <div className="flex flex-wrap items-center gap-2">
                       <a
                         href={`mailto:${o.email}`}
                         className="text-sage underline underline-offset-4 break-all"
                       >
                         {o.email}
                       </a>
+                      <CopyButton value={o.email} label="email" />
                     </div>
                   )}
                 </div>

@@ -65,6 +65,8 @@ export type Database = {
           id: string;
           is_read: boolean;
           name: string;
+          notified_at: string | null;
+          notify_error: string | null;
           phone: string | null;
           subject: string | null;
         };
@@ -76,6 +78,8 @@ export type Database = {
           id?: string;
           is_read?: boolean;
           name: string;
+          notified_at?: string | null;
+          notify_error?: string | null;
           phone?: string | null;
           subject?: string | null;
         };
@@ -87,6 +91,8 @@ export type Database = {
           id?: string;
           is_read?: boolean;
           name?: string;
+          notified_at?: string | null;
+          notify_error?: string | null;
           phone?: string | null;
           subject?: string | null;
         };
@@ -240,6 +246,8 @@ export type Database = {
           email: string | null;
           id: string;
           notes: string | null;
+          notified_at: string | null;
+          notify_error: string | null;
           order_ref: string;
           phone: string;
           pincode: string;
@@ -261,6 +269,8 @@ export type Database = {
           email?: string | null;
           id?: string;
           notes?: string | null;
+          notified_at?: string | null;
+          notify_error?: string | null;
           order_ref?: string;
           phone: string;
           pincode: string;
@@ -282,6 +292,8 @@ export type Database = {
           email?: string | null;
           id?: string;
           notes?: string | null;
+          notified_at?: string | null;
+          notify_error?: string | null;
           order_ref?: string;
           phone?: string;
           pincode?: string;
